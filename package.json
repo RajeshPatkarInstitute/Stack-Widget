@@ -1,5 +1,5 @@
 {
-  "name": "creating-stack-model-anillraju",
+  "name": "stack-widget",
   "version": "1.0.0",
   "description": "Creating a General Stack Widget in HTML,CSS, JS.",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RajeshPatkarInstitute/creating-stack-model-anillraju.git"
+    "url": "git+https://github.com/RajeshPatkarInstitute/Stack-Widget.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RajeshPatkarInstitute/creating-stack-model-anillraju/issues"
+    "url": "https://github.com/RajeshPatkarInstitute/Stack-Widget/issues"
   },
-  "homepage": "https://github.com/RajeshPatkarInstitute/creating-stack-model-anillraju#readme",
+  "homepage": "https://github.com/RajeshPatkarInstitute/Stack-Widget#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1"
