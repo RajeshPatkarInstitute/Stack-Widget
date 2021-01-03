@@ -1,0 +1,24 @@
+{
+  "name": "stack-widget",
+  "version": "1.0.0",
+  "description": "Creating a General Stack Widget in HTML,CSS, JS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RajeshPatkarInstitute/Stack-Widget.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RajeshPatkarInstitute/Stack-Widget/issues"
+  },
+  "homepage": "https://github.com/RajeshPatkarInstitute/Stack-Widget#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}

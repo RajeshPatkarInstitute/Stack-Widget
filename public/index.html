@@ -1,0 +1,93 @@
+<html>
+<style>
+    textarea {
+        background-color: black;
+        color: white;
+        height: 200px;
+        width: 200px;
+    }
+
+    .status {
+        background-color: blue;
+        color: red;
+        height: 20px;
+        width: 20px;
+        font-size: large;
+        font-weight: 700;
+    }
+</style>
+
+<script>
+    function pop() {
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
+                console.log(xhttp.responseText);
+                document.getElementById("result").value = xhttp.responseText;
+            }
+        }
+        xhttp.open("GET", "/stack-api/pop", true);
+        xhttp.send();
+        popup("popped");
+
+    }
+
+    function push() {
+
+        var xhttp = new XMLHttpRequest();
+        var pushData = document.getElementById("data").value;
+        xhttp.open("GET", "/stack-api/push/" + pushData, true);
+        xhttp.send();
+        popup("pushed");
+
+
+    }
+
+    function popup(txt) {
+        document.getElementById("status").innerHTML = txt;
+        setTimeout(function () {
+            document.getElementById("status").innerHTML = "";
+        }, 3000);
+
+    }
+
+    function serialize() {
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
+                console.log(xhttp.responseText);
+                var response = xhttp.responseText;
+
+                document.getElementById("allData").value = xhttp.responseText;
+            }
+        }
+        xhttp.open("GET", "/stack-api/serialize", true);
+        xhttp.send();
+        popup("serialized");
+    }
+</script>
+<h1>Stack</h1>
+<label id="status" class="status"></label>
+<br />
+<br />
+<br />
+
+<label>push:</label>
+<textarea id="data"></textarea>
+<button onclick="push()">push</button>
+
+<br />
+
+<label>pop:</label>
+<textarea id="result"></textarea>
+<button onclick="pop()">pop</button>
+<br />
+
+<label>All Data:</label>
+<textarea id="allData"></textarea>
+<button onclick="serialize()">serialize</button>
+<br />
+
+</html>
