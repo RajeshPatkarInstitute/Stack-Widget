@@ -16,19 +16,30 @@ class Stack {
     }
 
     pop() {
-        if (this._stack.length > 0) {
+        if (this.isEmpty()) {
+            console.log("Stack is empty, can't pop");
+        } else {
             var poppedElet = this._stack.pop();
             console.log("Popped :", poppedElet);
             return poppedElet;
-        } else {
-            console.log("Stack is empty");
         }
     }
 
     top() {
-        var top = this._stack[this._stack.length - 1];
-        console.log("Top element is : ", top)
-        return top;
+        if (this.isEmpty()) {
+            console.log("Stack is empty, nothing on top");
+        } else {
+            var top = this._stack[this._stack.length - 1];
+            console.log("Top element is : ", top)
+            return top;
+        }
+    }
+
+    isEmpty() {
+        if (this._stack.length == 0) {
+            return true;
+        }
+        return false;
     }
 
     toString() {
