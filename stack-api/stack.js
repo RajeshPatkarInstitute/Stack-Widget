@@ -16,22 +16,22 @@ class Stack {
     }
 
     pop() {
-        if (!this.isEmpty()) {
+        if (this.isEmpty()) {
+            console.log("Stack is empty, can't pop");
+        } else {
             var poppedElet = this._stack.pop();
             console.log("Popped :", poppedElet);
             return poppedElet;
-        } else {
-            console.log("Stack is empty");
         }
     }
 
     top() {
-        if (!this.isEmpty()) {
+        if (this.isEmpty()) {
+            console.log("Stack is empty, nothing on top");
+        } else {
             var top = this._stack[this._stack.length - 1];
             console.log("Top element is : ", top)
             return top;
-        } else {
-            console.log("Stack is empty");
         }
     }
 
