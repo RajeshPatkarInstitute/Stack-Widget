@@ -16,7 +16,7 @@ class Stack {
     }
 
     pop() {
-        if (this._stack.length > 0) {
+        if (!this.isEmpty()) {
             var poppedElet = this._stack.pop();
             console.log("Popped :", poppedElet);
             return poppedElet;
@@ -26,9 +26,20 @@ class Stack {
     }
 
     top() {
-        var top = this._stack[this._stack.length - 1];
-        console.log("Top element is : ", top)
-        return top;
+        if (!this.isEmpty()) {
+            var top = this._stack[this._stack.length - 1];
+            console.log("Top element is : ", top)
+            return top;
+        } else {
+            console.log("Stack is empty");
+        }
+    }
+
+    isEmpty() {
+        if (this._stack.length == 0) {
+            return true;
+        }
+        return false;
     }
 
     toString() {
