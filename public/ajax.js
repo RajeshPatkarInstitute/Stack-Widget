@@ -3,8 +3,8 @@ function ajaxController(e) {
     const parameters = e.data;
     const command = parameters.command;
     const data = parameters.data;
-    
-    console.log("Input:",command,data);
+
+    console.log("Input:", command, data);
     switch (command) {
 
         case "push": push(data);

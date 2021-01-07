@@ -64,24 +64,24 @@
     function responseHandler(e) {
         console.log("Response Handler:", e);
 
-            var result = e.data;
+        var result = e.data;
 
-            const command = result.command;
-            const data = result.response;
-            const status = result.status;
-            
-            console.log("Response Handler:", data);
+        const command = result.command;
+        const data = result.response;
+        const status = result.status;
 
-            switch (command) {
-                case "pop": popResultHandler(data);
-                    break;
-                case "push": pushResultHandler(data);
-                    break;
-                case "serialize": serializeResultHandler(data);
-                    break;
+        console.log("Response Handler:", data);
 
-                default: console.log("Un handled response");
-            }
+        switch (command) {
+            case "pop": popResultHandler(data);
+                break;
+            case "push": pushResultHandler(data);
+                break;
+            case "serialize": serializeResultHandler(data);
+                break;
+
+            default: console.log("Un handled response");
+        }
     }
 
 
