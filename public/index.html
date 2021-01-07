@@ -27,7 +27,8 @@
     function push() {
         var pushData = document.getElementById("data").value;
 
-        ajaxThread.postMessage({ 'command': "push", 'data': pushData });
+        var request = { 'command': "push", 'data': pushData };
+        ajaxThread.postMessage(request);
         popup("pushed");
     }
 
