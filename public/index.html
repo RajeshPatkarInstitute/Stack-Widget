@@ -18,31 +18,39 @@
 </style>
 
 <script>
+    var ajaxThread = new Worker('ajax.js');
+
     function pop() {
-
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = () => {
-            if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
-                console.log(xhttp.responseText);
-                document.getElementById("result").value = xhttp.responseText;
-            }
-        }
-        xhttp.open("GET", "/stack-api/pop", true);
-        xhttp.send();
-        popup("popped");
-
+        ajaxThread.postMessage({ 'command': "pop" });
     }
 
     function push() {
-
-        var xhttp = new XMLHttpRequest();
         var pushData = document.getElementById("data").value;
-        xhttp.open("GET", "/stack-api/push/" + pushData, true);
-        xhttp.send();
-        popup("pushed");
 
+        var request = { 'command': "push", 'data': pushData };
+        ajaxThread.postMessage(request);
+        popup("pushed");
+    }
+
+    function serialize() {
+        ajaxThread.postMessage({ 'command': "serialize" });
+        popup("serialized");
+    }
+
+    function popResultHandler(result) {
+        document.getElementById("result").value = result;
+    }
+
+    function pushResultHandler(result) {
 
     }
+
+    function serializeResultHandler(result) {
+
+        document.getElementById("allData").value = result;
+
+    }
+
 
     function popup(txt) {
         document.getElementById("status").innerHTML = txt;
@@ -52,21 +60,32 @@
 
     }
 
-    function serialize() {
+    ajaxThread.onmessage = responseHandler;
 
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = () => {
-            if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
-                console.log(xhttp.responseText);
-                var response = xhttp.responseText;
+    function responseHandler(e) {
+        console.log("Response Handler:", e);
 
-                document.getElementById("allData").value = xhttp.responseText;
-            }
+        var result = e.data;
+
+        const command = result.command;
+        const data = result.data;
+        const status = result.status;
+
+        console.log("Response Handler:", data);
+
+        switch (command) {
+            case "pop": popResultHandler(data);
+                break;
+            case "push": pushResultHandler(data);
+                break;
+            case "serialize": serializeResultHandler(data);
+                break;
+
+            default: console.log("Un handled response");
         }
-        xhttp.open("GET", "/stack-api/serialize", true);
-        xhttp.send();
-        popup("serialized");
     }
+
+
 </script>
 <h1>Stack</h1>
 <label id="status" class="status"></label>
