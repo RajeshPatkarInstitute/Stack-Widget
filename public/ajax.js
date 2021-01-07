@@ -10,10 +10,10 @@ function ajaxController(e) {
         case "push": push(data);
             break;
 
-        case "pop": response = pop();
+        case "pop": pop();
             break;
 
-        case "serialize": response = serialize();
+        case "serialize": serialize();
             break;
 
         default: console.log("No Such Command" + command);
