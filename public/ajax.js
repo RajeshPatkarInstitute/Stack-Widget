@@ -3,8 +3,8 @@ function ajaxController(e) {
     const parameters = e.data;
     const command = parameters.command;
     const data = parameters.data;
-
-    console.log("Input:", command, data);
+    
+    console.log("Input:",command,data);
     switch (command) {
 
         case "push": push(data);
@@ -25,7 +25,7 @@ function ajaxController(e) {
 
 function respond(status, response, command) {
 
-    var result = { 'status': status, 'response': response, 'command': command };
+    var result = { 'status': status, 'data': response, 'command': command };
     postMessage(result);
 
 }

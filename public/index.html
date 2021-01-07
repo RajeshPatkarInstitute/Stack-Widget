@@ -18,21 +18,21 @@
 </style>
 
 <script>
-    var thread = new Worker('ajax.js');
+    var ajaxThread = new Worker('ajax.js');
 
     function pop() {
-        thread.postMessage({ 'command': "pop" });
+        ajaxThread.postMessage({ 'command': "pop" });
     }
 
     function push() {
         var pushData = document.getElementById("data").value;
 
-        thread.postMessage({ 'command': "push", 'data': pushData });
+        ajaxThread.postMessage({ 'command': "push", 'data': pushData });
         popup("pushed");
     }
 
     function serialize() {
-        thread.postMessage({ 'command': "serialize" });
+        ajaxThread.postMessage({ 'command': "serialize" });
         popup("serialized");
     }
 
@@ -59,7 +59,7 @@
 
     }
 
-    thread.onmessage = responseHandler;
+    ajaxThread.onmessage = responseHandler;
 
     function responseHandler(e) {
         console.log("Response Handler:", e);
@@ -67,7 +67,7 @@
         var result = e.data;
 
         const command = result.command;
-        const data = result.response;
+        const data = result.data;
         const status = result.status;
 
         console.log("Response Handler:", data);
