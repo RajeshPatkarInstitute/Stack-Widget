@@ -13,7 +13,6 @@ apiDefinitions.get("/push/:data", function (req, res) {
         console.log('push event', e);
     })
     stack.push(inputData);
-    req.session.stackData = stack.toString();
     res.send(stack.toString());
 });
 
@@ -27,7 +26,6 @@ apiDefinitions.get("/pop", function (req, res) {
         console.log('pop event when empty', e);
     })
     var elet = stack.pop();
-    req.session.stackData = stack.toString();
     res.send({ 'data': elet });
 });
 
