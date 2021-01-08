@@ -8,7 +8,7 @@
 
 
 ### The following diagram suggests the layout
-![Stack-Widget Layout](/Image%20for%20Stack%20Widget.png)
+![Stack-Widget Layout](/StackWidgetUI.png)
 
 # STAAS 
 
