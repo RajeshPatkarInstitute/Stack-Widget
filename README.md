@@ -1,8 +1,6 @@
 # Stack-Widget
 
-  Widget is an application, or a component of an interface, that enables a user to perform a function or access a service.<sup>[1](https://www.lexico.com/definition/widget)</sup>. Stack-Widget is the client-side component that allows access to STAAS ( Stack As A Service Infrastructure )
-
-
+  Widget is an application, or a component of an interface, that enables a user to perform a function or access a service.<sup>[1](https://www.lexico.com/definition/widget)</sup>. Stack-Widget is an access component that allows interaction with STAAS ( Stack As A Service Infrastructure )
 
 # Welcome to Stack-Widget
 
