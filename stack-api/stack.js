@@ -1,12 +1,15 @@
 const {v4: uuidv4} = require('uuid');
 const EventEmitter = require('events');
+const fs = require('fs');
 
 class Stack extends EventEmitter{
-    constructor(stackJson) {
+    constructor(options={}) {
         super();
-        if (stackJson) {
-            this._stack = JSON.parse(stackJson);
-            this._stackId = uuidv4();
+        let id = options.id;
+        let data = options.data;
+        if (id && data) {
+            this._stack = data;
+            this._stackId = id;
         } else {
             this._stack = [];
             this._stackId = uuidv4();
@@ -20,6 +23,7 @@ class Stack extends EventEmitter{
         console.log("current stack has : " + this._stack);
         this.emit('push',{elem: elet, stackId: this._stackId});
         // this.emit('overFlow', {stackId: this._stackId});
+        persistStack({id: this._stackId,data: this._stack});
 
     }
 
@@ -31,6 +35,7 @@ class Stack extends EventEmitter{
             var poppedElet = this._stack.pop();
             console.log("Popped :", poppedElet);
             this.emit('pop',{elem: poppedElet, stackId: this._stackId});
+            persistStack({id: this._stackId,data: this._stack});
             return poppedElet;
         }
     }
@@ -57,6 +62,39 @@ class Stack extends EventEmitter{
         return JSON.stringify(this._stack);
     }
 
+    // factory
+    static getStack(id){
+        let instance;
+        console.log('getstack id', id);
+        
+        if(id) {
+            instance = getFromPersistence(id);
+        } else {
+            instance = new Stack();
+        }
+        return instance;
+    }
+
+}
+
+function persistStack(stack) {
+    let data = {};
+    console.log(stack);
+    data[stack.id] = stack.data;
+    console.log(data);
+    
+    console.log('writing..', JSON.stringify(data));
+    
+    fs.writeFileSync('./persistence.json',JSON.stringify(data));
+
+// this.emit('stackPersisted', {stackId: this._stackId});
+}
+
+function getFromPersistence(id) {
+    let allData = JSON.parse(fs.readFileSync('./persistence.json','utf8'));
+    let data = allData[id];
+
+    return new Stack({id, data});
 }
 
 module.exports = Stack;

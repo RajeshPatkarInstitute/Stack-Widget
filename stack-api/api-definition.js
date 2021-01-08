@@ -4,9 +4,11 @@ var Stack = require("./stack");
 var apiDefinitions = express.Router();
 
 apiDefinitions.get("/push/:data", function (req, res) {
+    // sample uuid -> 5b1be952-52af-409c-ad1b-645e7d2ec500
+    let uuidFromReq = '5b1be952-52af-409c-ad1b-645e7d2ec500';
+    // let uuidFromReq;
     var inputData = req.params.data;
-    let stackData = req.session.stackData;
-    let stack = new Stack(stackData);
+    let stack = Stack.getStack(uuidFromReq);
     stack.on('push', (e) => {
         console.log('push event', e);
     })
@@ -16,8 +18,8 @@ apiDefinitions.get("/push/:data", function (req, res) {
 });
 
 apiDefinitions.get("/pop", function (req, res) {
-    let stack;
-    stack = new Stack(req.session.stackData);
+    let uuidFromReq = '5b1be952-52af-409c-ad1b-645e7d2ec500';
+    let stack = Stack.getStack(uuidFromReq);
     stack.on('pop', (e) => {
         console.log('pop event', e);
     });
@@ -30,7 +32,8 @@ apiDefinitions.get("/pop", function (req, res) {
 });
 
 apiDefinitions.get("/serialize", function (req, res) {
-    let stack = new Stack(req.session.stackData);
+    let uuidFromReq = '5b1be952-52af-409c-ad1b-645e7d2ec500';
+    let stack = Stack.getStack(uuidFromReq);
     var stackData = stack.toString();
     res.send(stackData);
 });
