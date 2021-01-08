@@ -1,5 +1,8 @@
 # Stack-Widget
-Creating a General Stack Widget in HTML,CSS, JS.
+
+  Widget is an application, or a component of an interface, that enables a user to perform a function or access a service.
+  [Reference](https://www.lexico.com/definition/widget)
+
 
 # Welcome to Stack-Widget
 
