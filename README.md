@@ -4,9 +4,6 @@
 
 ## Stack-Widget-UI
 
-## Layout Proposal
-
-
 ### The following diagram suggests the layout
 ![Stack-Widget Layout](/StackWidgetUI.png)
 
