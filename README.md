@@ -4,7 +4,6 @@
 
 ## Stack-Widget-UI
 
-### The following diagram suggests the layout
 ![Stack-Widget Layout](/StackWidgetUI.png)
 
 # STAAS 
