@@ -7,6 +7,9 @@ apiDefinitions.get("/push/:data", function (req, res) {
     var inputData = req.params.data;
     let stackData = req.session.stackData;
     let stack = new Stack(stackData);
+    stack.on('push', (e) => {
+        console.log('push event', e);
+    })
     stack.push(inputData);
     req.session.stackData = stack.toString();
     res.send(stack.toString());
@@ -15,10 +18,14 @@ apiDefinitions.get("/push/:data", function (req, res) {
 apiDefinitions.get("/pop", function (req, res) {
     let stack;
     stack = new Stack(req.session.stackData);
-    
+    stack.on('pop', (e) => {
+        console.log('pop event', e);
+    });
+    stack.on('empty', (e) => {
+        console.log('pop event when empty', e);
+    })
     var elet = stack.pop();
     req.session.stackData = stack.toString();
-    
     res.send({ 'data': elet });
 });
 
