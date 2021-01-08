@@ -1,11 +1,14 @@
-class Stack {
+const {v4: uuidv4} = require('uuid');
 
+class Stack {
     constructor(stackJson) {
-        if (Array.isArray(stackJson)) {
-            this._stack = stackJson;
+        if (stackJson) {
+            this._stack = JSON.parse(stackJson);
+            this._stackId = uuid();
         } else {
             this._stack = [];
-            console.log("Bad input " + stackJson + " is not a list");
+            this._stackId = uuid();
+            console.log("Initializing empty array");
         }
     }
 
