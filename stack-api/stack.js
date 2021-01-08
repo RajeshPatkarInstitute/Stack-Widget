@@ -4,10 +4,10 @@ class Stack {
     constructor(stackJson) {
         if (stackJson) {
             this._stack = JSON.parse(stackJson);
-            this._stackId = uuid();
+            this._stackId = uuidv4();
         } else {
             this._stack = [];
-            this._stackId = uuid();
+            this._stackId = uuidv4();
             console.log("Initializing empty array");
         }
     }
