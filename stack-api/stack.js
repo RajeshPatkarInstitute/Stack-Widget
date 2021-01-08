@@ -66,7 +66,6 @@ class Stack extends EventEmitter{
     static getStack(id){
         let instance;
         console.log('getstack id', id);
-        
         if(id) {
             instance = getFromPersistence(id);
         } else {
@@ -79,12 +78,7 @@ class Stack extends EventEmitter{
 
 function persistStack(stack) {
     let data = {};
-    console.log(stack);
     data[stack.id] = stack.data;
-    console.log(data);
-    
-    console.log('writing..', JSON.stringify(data));
-    
     fs.writeFileSync('./persistence.json',JSON.stringify(data));
 
 // this.emit('stackPersisted', {stackId: this._stackId});
@@ -93,7 +87,6 @@ function persistStack(stack) {
 function getFromPersistence(id) {
     let allData = JSON.parse(fs.readFileSync('./persistence.json','utf8'));
     let data = allData[id];
-
     return new Stack({id, data});
 }
 

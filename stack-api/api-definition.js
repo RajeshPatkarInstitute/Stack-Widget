@@ -6,7 +6,6 @@ var apiDefinitions = express.Router();
 apiDefinitions.get("/push/:data", function (req, res) {
     // sample uuid -> 5b1be952-52af-409c-ad1b-645e7d2ec500
     let uuidFromReq = '5b1be952-52af-409c-ad1b-645e7d2ec500';
-    // let uuidFromReq;
     var inputData = req.params.data;
     let stack = Stack.getStack(uuidFromReq);
     stack.on('push', (e) => {
