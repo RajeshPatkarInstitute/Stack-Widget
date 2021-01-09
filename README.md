@@ -14,10 +14,3 @@ STAAS stands for **ST**ack **A**s **A** **S**ervice
 1. InThread Service
 2. Web Worker Based
 3. Web Based.
-
-
-### Running instructions
-
-To start go into the directory and run
-node index.js <br/>
-open http://localhost:8080/
