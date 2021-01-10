@@ -1,18 +1,25 @@
 const {v4: uuidv4} = require('uuid');
 const EventEmitter = require('events');
-const fs = require('fs');
+const storage = require("./filestorage");
+
+var useSingleStackPerServer = true;
+// TODO remove defaulting to a single stack, once a stack selection flow is build
+// ex - select stack from UI, or main stack per logge in user         
+            
 
 class Stack extends EventEmitter{
-    constructor(options={}) {
+    constructor(id) {
         super();
-        let id = options.id;
-        let data = options.data;
-        if (id && data) {
-            this._stack = data;
-            this._stackId = id;
+        if (id) {
+            this._stack = storage.load(id);
+            this._stackId = id;            
+        } else if(useSingleStackPerServer){
+            this._stack = storage.load('default-stack');
+            this._stackId = 'default-stack';            
         } else {
             this._stack = [];
             this._stackId = uuidv4();
+            storage.synchronize(this._stack, this._stackId);
             console.log("Initializing empty array");
         }
     }
@@ -21,9 +28,9 @@ class Stack extends EventEmitter{
         console.log("Pushing :", elet);
         this._stack.push(elet);
         console.log("current stack has : " + this._stack);
+        storage.synchronize(this._stack, this._stackId);
         this.emit('push',{elem: elet, stackId: this._stackId});
         // this.emit('overFlow', {stackId: this._stackId});
-        persistStack({id: this._stackId,data: this._stack});
 
     }
 
@@ -34,8 +41,8 @@ class Stack extends EventEmitter{
         } else {
             var poppedElet = this._stack.pop();
             console.log("Popped :", poppedElet);
+            storage.synchronize(this._stack, this._stackId);
             this.emit('pop',{elem: poppedElet, stackId: this._stackId});
-            persistStack({id: this._stackId,data: this._stack});
             return poppedElet;
         }
     }
@@ -62,32 +69,6 @@ class Stack extends EventEmitter{
         return JSON.stringify(this._stack);
     }
 
-    // factory
-    static getStack(id){
-        let instance;
-        console.log('getstack id', id);
-        if(id) {
-            instance = getFromPersistence(id);
-        } else {
-            instance = new Stack();
-        }
-        return instance;
-    }
-
-}
-
-function persistStack(stack) {
-    let data = {};
-    data[stack.id] = stack.data;
-    fs.writeFileSync('./persistence.json',JSON.stringify(data));
-
-// this.emit('stackPersisted', {stackId: this._stackId});
-}
-
-function getFromPersistence(id) {
-    let allData = JSON.parse(fs.readFileSync('./persistence.json','utf8'));
-    let data = allData[id];
-    return new Stack({id, data});
 }
 
 module.exports = Stack;
