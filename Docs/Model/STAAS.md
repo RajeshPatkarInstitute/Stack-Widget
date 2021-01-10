@@ -1,5 +1,3 @@
-# The Documentation for Stack Module Goes here
-
 ## Stack as a Service STAAS. 
 
 * Life Cycle Management
