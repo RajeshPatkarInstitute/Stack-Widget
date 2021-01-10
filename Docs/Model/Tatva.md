@@ -3,6 +3,7 @@
 The fundamental unit of storage in the persistence store for stack is **Tatva**
 
 For instance, Integer Value 12002 is stored as follows.
+
 ![Tatva Prototype](tatva.png)
 
 
