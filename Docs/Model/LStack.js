@@ -1,10 +1,56 @@
 /* Linked List based Stack */
-class Meta{
+import { v4 as uuidv4 } from 'uuid';
+
+
+class Node{
+    constructor(v,next){
+       this.v = v;
+       this.next = next;
+    }
+    getNext(){
+        return this.next;
+    }
+    getValue(){
+        return this.v;
+    }
+}
+
+class Stack{
     constructor(){
         let d = new Date();
+        this._head = this;
         this._count = 0;
         this._creation = d;
         this._updation = d;
+        this._uuid = uuidv4();
+    }
+    push(v){
+        var n = new Node(v,this._head);
+        this._head = n;
+        this._count++;
+        _updation = new Date();
+    }
+    pop(){
+      if(this._head !== this){
+        let firstNode = this._head;
+        this._head = this._head.next;
+        this._count--;
+        this._updation = new Date();
+        return firstNode;
+      }
+      return null; /* Work Needed Here */
+    }
+    toTatva(){
+          /* Work Needed Here */
+    }
+    peek(){
+          return this._head;
+    }
+    flush(){
+        this._head = this;
+    }
+    isEmpty(){
+       return this.head === this._tail;
     }
     get Creation(){
         return this._creation;
@@ -24,66 +70,7 @@ class Meta{
     set Count(v){
         this._count = v;
     }
-    increment(){
-        this._count++;
-    }
-    decrement(){
-        this._count--;
-    }
-}
-
-
-
-class Node{
-    constructor(v,next=null){
-       this.v = v;
-       this.next = next;
-    }
-    getNext(){
-        return this.next;
-    }
-    getValue(){
-        return this.v;
-    }
-}
-
-
-
-class Stack{
-    constructor(){
-        let m = Meta();
-        this.head = m;
-        this._tail = m;
-    }
-    push(v){
-        var n = new Node(v,this.head);
-        this.head = n;
-        this._tail.increment();
-        this._tail.Updation = new Date();
-    }
-    pop(){
-      if(this.head !== null){
-        let firstNode = this.head;
-        this.head = this.head.next;
-        this._tail.decrement();
-        this._tail.Updation = new Date();
-        return firstNode;
-      }
-      return null; /* Work Needed Here */
-    }
-    toTatva(){
-          /* Work Needed Here */
-    }
-    peek(){
-          /* Work Needed Here */
-    }
-    flush(){
-        head = tail;
-    }
-    isEmpty(){
-       return this.head === this._tail;
-    }
-    get Meta(){
-        return this._tail;
+    get uuid(){
+       return this._uuid;
     }
 }
