@@ -6,3 +6,5 @@
 * flush
 * peek
 * toTatva
+* isEmpty
+* isFull
