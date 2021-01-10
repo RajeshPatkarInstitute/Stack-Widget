@@ -1,23 +1,26 @@
 var express = require("express");
-var Stack = require("./stack");
+var stackFactory = require("./stack");
 
 var apiDefinitions = express.Router();
 
 apiDefinitions.get("/push/:data", function (req, res) {
-    // sample uuid -> 5b1be952-52af-409c-ad1b-645e7d2ec500
-    let uuidFromReq = '5b1be952-52af-409c-ad1b-645e7d2ec500';
+    // sample uuid -> 07e96190-f083-4c80-960e-aacb21d34388
+    let uuidFromReq = '07e96190-f083-4c80-960e-aacb21d34388';
+    // let uuidFromReq;
     var inputData = req.params.data;
-    let stack = Stack.getStack(uuidFromReq);
+    let stack = stackFactory(uuidFromReq);
+    console.log('stack from factory is', stack);
+    
     stack.on('push', (e) => {
-        console.log('push event', e);
-    })
+            console.log('push event', e);
+        })
     stack.push(inputData);
     res.send(stack.toString());
 });
-
+    
 apiDefinitions.get("/pop", function (req, res) {
-    let uuidFromReq = '5b1be952-52af-409c-ad1b-645e7d2ec500';
-    let stack = Stack.getStack(uuidFromReq);
+    let uuidFromReq = '07e96190-f083-4c80-960e-aacb21d34388';
+    let stack = stackFactory(uuidFromReq);
     stack.on('pop', (e) => {
         console.log('pop event', e);
     });
@@ -29,9 +32,8 @@ apiDefinitions.get("/pop", function (req, res) {
 });
 
 apiDefinitions.get("/serialize", function (req, res) {
-    let uuidFromReq = '5b1be952-52af-409c-ad1b-645e7d2ec500';
-    let stack = Stack.getStack(uuidFromReq);
-    var stackData = stack.toString();
+    let uuidFromReq = '07e96190-f083-4c80-960e-aacb21d34388';
+    let stack = stackFactory(uuidFromReq);
     res.send(stackData);
 });
 

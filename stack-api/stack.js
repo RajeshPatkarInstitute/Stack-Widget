@@ -18,12 +18,15 @@ class Stack extends EventEmitter{
     }
 
     push(elet) {
+        if(this._stack.length == 10) { //TMP TODO stack full
+            // this.emit('stackFull', {stackId: this._stackId});
+            throw new StackFullException(this._stackId);
+        }
         console.log("Pushing :", elet);
         this._stack.push(elet);
         console.log("current stack has : " + this._stack);
         this.emit('push',{elem: elet, stackId: this._stackId});
-        // this.emit('overFlow', {stackId: this._stackId});
-        persistStack({id: this._stackId,data: this._stack});
+        persistStack({id: this._stackId,val: elet});
 
     }
 
@@ -62,32 +65,74 @@ class Stack extends EventEmitter{
         return JSON.stringify(this._stack);
     }
 
-    // factory
-    static getStack(id){
-        let instance;
-        console.log('getstack id', id);
-        if(id) {
-            instance = getFromPersistence(id);
-        } else {
-            instance = new Stack();
-        }
-        return instance;
-    }
-
 }
 
-function persistStack(stack) {
-    let data = {};
-    data[stack.id] = stack.data;
-    fs.writeFileSync('./persistence.json',JSON.stringify(data));
-
+/*
+{
+    "7e7246c1-6589-49ad-9a81-08199e014b62":["1"],
+    "fghy46c1-sdsa-49ad-9a81-08199e014b62":["2","3"]
+}
+*/
+function persistStack(stackElem) {
+    let allData;
+    let fileData = fs.readFileSync('./persistence.json','utf8');
+    if(fileData) {
+        allData = JSON.parse(fileData);
+        if(allData[stackElem.id]){
+            allData[stackElem.id].push(stackElem.val);
+        } else {
+            allData[stackElem.id] = [stackElem.val];
+        }
+    } else {
+        allData = {
+            [allData[stackElem.id]] : [stackElem.val]
+        }
+    }
+    fs.writeFileSync('./persistence.json',JSON.stringify(allData));
 // this.emit('stackPersisted', {stackId: this._stackId});
 }
 
 function getFromPersistence(id) {
     let allData = JSON.parse(fs.readFileSync('./persistence.json','utf8'));
     let data = allData[id];
-    return new Stack({id, data});
+    let st = new Stack({id, data});
+    return st;
 }
 
-module.exports = Stack;
+function StackFullException(id) {
+    this.fromStack = id;
+}
+
+function stackFactory(id){
+    let instance;
+    console.log('getstack id', id);
+    if(id) {
+        instance = getFromPersistence(id);
+    } else {
+        instance = new Stack();
+    }
+
+    instance.push = new Proxy(instance.push, {
+        apply: (target,thisArg,argList) => {
+            console.log(`entering ${target.name}`);
+            try {
+                target.call(thisArg, ...argList);
+            } catch(exception) {
+                console.log('exception.fromStack id :',exception.fromStack);
+                let id = exception.fromStack;
+                let instance = new Stack();
+                instance._stackId = id;
+                instance.push(...argList);
+            }
+            console.log(`leaving ${target.name}`);
+        }
+    })
+    return instance;
+}
+
+class StackProxy {
+    constructor(target, args) {
+        
+    }
+}
+module.exports = stackFactory;
