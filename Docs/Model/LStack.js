@@ -1,7 +1,6 @@
 /* Linked List based Stack */
 import { v4 as uuidv4 } from 'uuid';
 
-
 class Node{
     constructor(v,next){
        this.v = v;
