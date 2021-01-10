@@ -7,4 +7,3 @@
 * peek
 * toTatva
 * isEmpty
-* isFull
