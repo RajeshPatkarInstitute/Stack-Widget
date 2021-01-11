@@ -1,4 +1,4 @@
-# Stack-Widget Requirements v 0.1 draft
+# MileStone 1 Requirements v 0.1 draft
 
 
 ## UI
