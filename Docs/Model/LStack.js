@@ -17,7 +17,7 @@ class Node{
 class Stack{
     constructor(){
         let d = new Date();
-        this._head = this;
+        this._head = null;
         this._count = 0;
         this._creation = d;
         this._updation = d;
@@ -30,7 +30,7 @@ class Stack{
         _updation = new Date();
     }
     pop(){
-      if(this._head !== this){
+      if(this._head !== null){
         let firstNode = this._head;
         this._head = this._head.next;
         this._count--;
@@ -46,10 +46,10 @@ class Stack{
           return this._head;
     }
     flush(){
-        this._head = this;
+        this._head = null;
     }
     isEmpty(){
-       return this.head === this._tail;
+       return this.head == null;
     }
     get Creation(){
         return this._creation;
