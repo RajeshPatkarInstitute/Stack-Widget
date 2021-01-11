@@ -12,8 +12,8 @@ User Interface Mock-up
 - [] Create option in UI for viewing stack content 
 
 #### API
-- < Wrok In Progress >
-
+- < Wrok In Progress >[ Have a look at API ](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Model/Stack.md)
+ 
 #### Model
 Create Stack Model with following features
   1. Create: Create a stack with unique UUID
