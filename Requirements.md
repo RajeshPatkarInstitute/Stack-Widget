@@ -21,8 +21,8 @@ Create Stack Model with following features
   1. Pop: Allow data to be retrieved from stack top
   1. Top: Peep into stack top 
   1. Empty: Check if Stack is Empty
-  1. Full: Check if Stack is Full
-  1. Stringify: Stringify Stack Content
+  1. Full: Check if Stack is Full *Stack will be dynamic so at kernel level no limit. Via proxy the limit can be assigned*
+  1. Stringify: Stringify Stack *Content get the idea here*[Tatva](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Model/Tatva.md)
 
 
 #### Controller
