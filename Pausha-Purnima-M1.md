@@ -5,7 +5,8 @@
 - stack-widget-component
   - stack-widget.html
   - stack-widget.css
-  - stack-widget.jj
+  - stack-widget.js
+- vertical-menu.js
 
 #### API
 - [Stack Rest API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Controller/Stack-Rest-API.md) ✓
