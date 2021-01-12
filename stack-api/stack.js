@@ -1,93 +1,221 @@
-const {v4: uuidv4} = require('uuid');
-const EventEmitter = require('events');
-const fs = require('fs');
+let fs = require('fs');
 
-class Stack extends EventEmitter{
-    constructor(options={}) {
-        super();
-        let id = options.id;
-        let data = options.data;
-        if (id && data) {
-            this._stack = data;
-            this._stackId = id;
-        } else {
-            this._stack = [];
-            this._stackId = uuidv4();
-            console.log("Initializing empty array");
+/* Linked List based Stack */
+var id = 0;
+
+function uuid(){
+    id = id + 1;
+    return id;
+}
+class Node{
+    
+    constructor(back=null,v=null){
+       this._back = back;
+       this._v = v;
+    }
+    
+    get back(){
+        return this._back;
+    }
+    
+    set back(n){
+        if (n instanceof Node){
+            this._back = n;
+        }
+        else{
+            if(n==null)this._back = null;
+            else throw "Argument to back not a Node";
+        }
+    }
+    
+    get value(){
+        return this._v;
+    }
+    
+    set value(v){
+        this._v = v;
+    }
+}
+
+class Stack {
+    
+    constructor(id=0){
+        let d = new Date();
+        this._head = this;
+        this._count = 0;
+        this._creation = d;
+        this._updation = d;
+        this._uuid = id;
+        this._listener = null;
+        this[Symbol.iterator] = this.SGenerator;
+    }
+
+    addListener(l){
+        if(this._listener === null) this._listener = new Stack();
+        if(l instanceof Function) this._listener.push(l);
+        else {
+            if(l instanceof Node  && l.value instanceof Function){
+                this._listener.push(l);
+            }
+            else{
+                throw "Illegal Listener";
+            }
+        }
+        return this;
+    }
+
+    fireEvent(e,v){
+        if(!(this._listener === null || this._listener.count === 0)){
+          for(let l of this._listener.iterator)l(e,v,this);
+        }
+    }
+    
+    push(v){
+        if(v==null) throw "Can't push Null Values";
+        let n  = new Node(this._head,v);
+        this._head.front = n;
+        this._head = n;
+        this._count++;
+        this._updation = new Date();
+        this.fireEvent("push",n.value);
+    }
+
+    pop(){
+      let current = null;
+      if (this._count == 0) return current;
+      current = this._head;
+      this._head = this._head.back;
+      this._count--;
+      this._updation = new Date();
+      current.back = null;
+      this.fireEvent("pop",current.value,this);
+      return current.value;
+    }
+    
+    peek(){
+          return this._head.value;
+    }
+    
+    flush(){
+        this._head = null;
+    }
+    
+    isEmpty(){
+       return this._head === null;
+    }
+    
+    get head(){
+        return this._head;
+    }
+    
+    get creation(){
+        return this._creation;
+    }
+    
+    set creation(v){
+        this._creation = v;
+    }
+    
+    get updation(){
+        return this._updation;
+    }
+    
+    set updation(v){
+        this._updation = v;
+    }
+    
+    get count(){
+        return this._count;
+    }
+    
+    set count(v){
+        this._count = v;
+    }
+    
+    get uuid(){
+       return this._uuid;
+    }
+    
+    *SGenerator(){
+        let cursor = this._head;
+        for( let index = 0; index < this.count ; index++){
+            yield cursor.value;
+            cursor = cursor.back;
         }
     }
 
-    push(elet) {
-        console.log("Pushing :", elet);
-        this._stack.push(elet);
-        console.log("current stack has : " + this._stack);
-        this.emit('push',{elem: elet, stackId: this._stackId});
-        // this.emit('overFlow', {stackId: this._stackId});
-        persistStack({id: this._stackId,data: this._stack});
-
+    get iterator(){
+        return this.SGenerator();
+    }
+    
+    reduce(op,acc=null){
+        let itr = this.iterator;
+        if(acc == null){
+            if((acc = itr.next()).done) return null;
+            else acc = acc.value;
+        }
+        for(let v of itr) acc = op(v,acc);
+        return acc;
     }
 
-    pop() {
-        if (this.isEmpty()) {
-            console.log("Stack is empty, can't pop");
-            this.emit('empty', {stackId: this._stackId});
-        } else {
-            var poppedElet = this._stack.pop();
-            console.log("Popped :", poppedElet);
-            this.emit('pop',{elem: poppedElet, stackId: this._stackId});
-            persistStack({id: this._stackId,data: this._stack});
-            return poppedElet;
+    map(op,order = true){
+        let s = new Stack();
+        for(let v of this.iterator) s.push(op(v));
+        return order ? s.reverse() : s;
+    }
+
+    forEach(op){
+        for(let v of this.iterator){
+            op(v);
         }
     }
 
-    top() {
-        if (this.isEmpty()) {
-            console.log("Stack is empty, nothing on top");
-        } else {
-            var top = this._stack[this._stack.length - 1];
-            console.log("Top element is : ", top)
-            return top;
-        }
+    filter(op,order=true){
+        let s = new Stack();
+        for(let v of this.iterator)if(op(v))s.push(v);
+        return order ? s.reverse() : s;
+    }
+    
+    reverse(){
+        let s = new Stack();
+        for(let v of this.iterator) s.push(v);
+        return s;
     }
 
-    isEmpty() {
-        if (this._stack.length == 0) {
-            return true;
+    toString(){
+        let data = [];
+        let res = {'id' : this._uuid, 'data' : data};
+        for(let v of this.iterator){
+             data.push(v);
         }
-        return false;
+
+        return JSON.stringify(res);
     }
 
-    toString() {
-        // this.emit('stackRead', {stackId: this._stackId});
-        return JSON.stringify(this._stack);
-    }
-
-    // factory
-    static getStack(id){
-        let instance;
-        console.log('getstack id', id);
-        if(id) {
-            instance = getFromPersistence(id);
-        } else {
-            instance = new Stack();
+    toTatva(){
+        let data = [];
+        for(let v of this.iterator){
+             let obj = {
+                media_type:"",
+                data:Buffer.from(JSON.stringify(v)).toString('base64'),
+                md5:""
+             }
+             data.push(obj);
         }
-        return instance;
+        fs.writeFileSync(__dirname+"/StackStore/"+(this._uuid).toString()+'.json',JSON.stringify(data));
     }
 
 }
 
-function persistStack(stack) {
-    let data = {};
-    data[stack.id] = stack.data;
-    fs.writeFileSync('./persistence.json',JSON.stringify(data));
-
-// this.emit('stackPersisted', {stackId: this._stackId});
-}
-
-function getFromPersistence(id) {
-    let allData = JSON.parse(fs.readFileSync('./persistence.json','utf8'));
-    let data = allData[id];
-    return new Stack({id, data});
+Stack.fromTatva=function(id)
+{
+    data = JSON.parse(fs.readFileSync(__dirname+"/StackStore/"+id+".json"));
+    let s = new Stack(parseInt(id));
+    length = data.length;
+    for(let i = 0; i < length ; i++){
+        s.push(JSON.parse(Buffer.from(data.pop().data, 'base64').toString()));
+    }
+    return s;
 }
 
 module.exports = Stack;
