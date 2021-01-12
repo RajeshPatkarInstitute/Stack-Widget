@@ -8,7 +8,7 @@
 | pop| id | - |
 | serialize| id | - |ap
 | delete | id | - |
-
+<br/>
 
 ## getAll
 This Restful call will bring the list of all the Stacks present in the StackStore.
