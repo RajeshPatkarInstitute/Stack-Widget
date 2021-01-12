@@ -13,7 +13,7 @@ User Interface Mock-up
 
 #### API
 - [Stack Rest API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Controller/Stack-Rest-API.md) ✓
-- [Stack API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/stack-api/stack.js) ✓
+- [Stack API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Model/Stack-API.md) ✓
  
 #### Model
 Create Stack Model with following features
