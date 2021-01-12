@@ -6,14 +6,19 @@ function ajaxController(e) {
     
     console.log("Input:",command,data);
     switch (command) {
+        case "getStacks": getStacks(data);
+            break;
+
+        case "createStack": createStack(data);
+            break;
 
         case "push": push(data);
             break;
 
-        case "pop": pop();
+        case "pop": pop(data);
             break;
 
-        case "serialize": serialize();
+        case "serialize": serialize(data);
             break;
 
         default: console.log("No Such Command" + command);
@@ -30,7 +35,39 @@ function respond(status, response, command) {
 
 }
 
-function pop() {
+function getStacks() {
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
+            console.log(xhttp.responseText);
+
+            var stacks = xhttp.responseText;
+            respond("SUCCESS", stacks, "getStacks");
+        }
+    }
+    xhttp.open("GET", "/stack-api/getAll", true);
+    xhttp.send();
+
+}
+
+function createStack(stackId) {
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
+            console.log(xhttp.responseText);
+
+            var poppedData = xhttp.responseText;
+            respond("SUCCESS", poppedData, "createStack");
+        }
+    }
+    xhttp.open("GET", "/stack-api/create/" + stackId, true);
+    xhttp.send();
+
+}
+
+function pop(data) {
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = () => {
@@ -41,7 +78,7 @@ function pop() {
             respond("SUCCESS", poppedData, "pop");
         }
     }
-    xhttp.open("GET", "/stack-api/pop", true);
+    xhttp.open("GET", "/stack-api/pop/"+data, true);
     xhttp.send();
 
 }
@@ -54,17 +91,17 @@ function push(pushData) {
 }
 
 
-function serialize() {
+function serialize(data) {
 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = () => {
         if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
             const allData = xhttp.responseText;
             console.log("serialize result: ", allData);
-            respond("SUCCESS", allData, "serialize");
+            respond("SUCCESS", JSON.parse(allData), "serialize");
         }
     }
-    xhttp.open("GET", "/stack-api/serialize", true);
+    xhttp.open("GET", "/stack-api/serialize/"+data, true);
     xhttp.send();
 }
 

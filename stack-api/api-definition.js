@@ -23,7 +23,7 @@ apiDefinitions.get("/pop/:id", function (req, res) {
 });
 
 apiDefinitions.get("/serialize/:id", function (req, res) {
-    let stack = Stack.getStack(req.params.id);
+    let stack = Stack.fromTatva(req.params.id);
     res.setHeader('Content-Type', 'application/json');
     res.send(stack.toString());
 });
@@ -34,6 +34,14 @@ apiDefinitions.get("/create/:id", function (req, res) {
     stack.toTatva();
     res.setHeader('Content-Type', 'application/json');
     res.send(stack.toString());
+});
+
+apiDefinitions.get("/getAll", function (req, res) {
+    let files = fs.readdirSync(__dirname + "/StackStore/");
+    let stackIds = files.map((file) => { return file.replace(".json", ""); });
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(stackIds);
 });
 
 apiDefinitions.get("/flush/:id", function (req, res) {
@@ -47,7 +55,7 @@ apiDefinitions.get("/flush/:id", function (req, res) {
 });
 
 apiDefinitions.get("/delete/:id", function (req, res) {
-    fs.unlinkSync(__dirname+"/StackStore/"+req.params.id+'.json');
+    fs.unlinkSync(__dirname + "/StackStore/" + req.params.id + '.json');
     res.send(`Stack with id = ${req.params.id} deleted from StackStore`);
 });
 
