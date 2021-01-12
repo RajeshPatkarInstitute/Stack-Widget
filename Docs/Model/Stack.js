@@ -1,10 +1,12 @@
-/* Linked List based Stack */
-var id = 0;
+/* Mock Implemenation of UUID*/
 
+var id = 0;
 function uuid(){
     id = id + 1;
     return id;
 }
+
+/* Linked List based Stack */
 
 class Node{
     
@@ -34,6 +36,7 @@ class Node{
     set value(v){
         this._v = v;
     }
+    
 }
 
 class Stack {
@@ -184,6 +187,7 @@ class Stack {
         for(let v of this.iterator) s.push(v);
         return s;
     }
+    
 }
 
 /* Adhoc Manual Testing */
@@ -213,13 +217,13 @@ function main(){
         console.table(v);
     } 
     s1.push(51);
-    for(let v of s1.iterator){
+    s1.push(99);
+    for(let v of s1){
         console.table(v);
     } 
     let x = s1.reduce((e,acc)=>e+acc);
     console.log(x);
     s1.map((e)=>e*3).filter((e)=>e>60).forEach(console.log);
 }
-
 
 main();
