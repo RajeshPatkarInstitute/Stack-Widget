@@ -17,5 +17,8 @@
 - web-controller.js
 - web-worker-controller.js
 
+#### Model
+- stack.js
+
 #### Persistence
 - stack-store.js
