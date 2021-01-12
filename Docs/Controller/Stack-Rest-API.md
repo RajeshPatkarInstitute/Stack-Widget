@@ -10,6 +10,10 @@
 | delete | id | - |
 
 
+## getAll
+This Restful call will bring the list of all the Stacks present in the StackStore.
+eg. **localhost:8080/stack-api/getAll**.
+
 ## Create
 This Restful call will create a Stack with the id provided via dynamic URL.
 eg. **localhost:8080/stack-api/create/23**. The preceeding URL will **create** a Stack with id 23
@@ -18,3 +22,4 @@ eg. **localhost:8080/stack-api/create/23**. The preceeding URL will **create** a
 This Restful call will delete the Stack with a given id provided via dynamic URL. 
 eg. **localhost:8080/stack-api/delete/23**. 
 The preceeding URL will **delete** a Stack with id 23
+
