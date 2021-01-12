@@ -8,8 +8,8 @@
   - stack-widget.js
 
 User Interface Mock-up
-![Image of Stack Widget] (https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/StackWidgetUI.png)
-- [] Create option in UI for viewing stack content 
+![Image of Stack Widget](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/StackWidgetUI.png)
+
 
 #### API
 - [Stack Rest API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Controller/Stack-Rest-API.md) ✓
