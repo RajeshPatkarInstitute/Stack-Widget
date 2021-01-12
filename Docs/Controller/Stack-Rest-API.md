@@ -5,9 +5,10 @@
 2.  Define Stack Creation, Deletion, Suspension etc. .. ( To be introduced later )
 
 | Command | Param1 | Param2  |
-| :---:   | :-: | :-: |
+| :---:  |  :-: | :-: |
+| getAll |  _  |  _  |
+| create | id |    |
 | push | id | value |
 | pop| id |   |
 | serialize| id |   |
-| create | id |    |
 | delete | id |  |
