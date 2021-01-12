@@ -33,3 +33,9 @@ This Restful call will pop the value from Stack with a given id provided via dyn
 eg. **localhost:8080/stack-api/pop/23**. 
 The preceeding URL will **pop** a value from the Stack with id 23
 
+## serialize
+This Restful call will read the value from Stack with a given id provided via dynamic URL. 
+eg. **localhost:8080/stack-api/serialize/23**. 
+The preceeding URL will get content from the Stack with id 23
+
+
