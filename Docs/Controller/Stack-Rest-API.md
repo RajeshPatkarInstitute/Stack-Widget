@@ -4,10 +4,11 @@
 | :---:  |  :-: | :-: |
 | getAll |  _  |  _  |
 | create | id | -  |
+| delete | id | - |
 | push | id | value |
 | pop| id | - |
 | serialize| id | - |ap
-| delete | id | - |
+
 <br/>
 
 ## getAll
