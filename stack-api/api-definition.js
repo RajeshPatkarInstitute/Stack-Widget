@@ -1,38 +1,54 @@
 var express = require("express");
 var Stack = require("./stack");
+var fs = require("fs");
 
 var apiDefinitions = express.Router();
 
-apiDefinitions.get("/push/:data", function (req, res) {
-    // sample uuid -> 5b1be952-52af-409c-ad1b-645e7d2ec500
-    let uuidFromReq = '5b1be952-52af-409c-ad1b-645e7d2ec500';
+
+apiDefinitions.get("/push/:id/:data", function (req, res) {
     var inputData = req.params.data;
-    let stack = Stack.getStack(uuidFromReq);
-    stack.on('push', (e) => {
-        console.log('push event', e);
-    })
+    let stack = Stack.fromTatva(req.params.id);
     stack.push(inputData);
+    stack.toTatva();
+    res.setHeader('Content-Type', 'application/json');
     res.send(stack.toString());
 });
 
-apiDefinitions.get("/pop", function (req, res) {
-    let uuidFromReq = '5b1be952-52af-409c-ad1b-645e7d2ec500';
-    let stack = Stack.getStack(uuidFromReq);
-    stack.on('pop', (e) => {
-        console.log('pop event', e);
-    });
-    stack.on('empty', (e) => {
-        console.log('pop event when empty', e);
-    })
+apiDefinitions.get("/pop/:id", function (req, res) {
+    let stack = Stack.fromTatva(req.params.id);
     var elet = stack.pop();
-    res.send({ 'data': elet });
+    stack.toTatva();
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(elet));
 });
 
-apiDefinitions.get("/serialize", function (req, res) {
-    let uuidFromReq = '5b1be952-52af-409c-ad1b-645e7d2ec500';
-    let stack = Stack.getStack(uuidFromReq);
-    var stackData = stack.toString();
-    res.send(stackData);
+apiDefinitions.get("/serialize/:id", function (req, res) {
+    let stack = Stack.getStack(req.params.id);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(stack.toString());
+});
+
+apiDefinitions.get("/create/:id", function (req, res) {
+    /* Validation work to be done */
+    let stack = new Stack(parseInt(req.params.id));
+    stack.toTatva();
+    res.setHeader('Content-Type', 'application/json');
+    res.send(stack.toString());
+});
+
+apiDefinitions.get("/flush/:id", function (req, res) {
+    /* Validation work to be done */
+    console.log("id for create is " + req.params.id);
+    let stack = new Stack(parseInt(req.params.id));
+    stack.flush();
+    stack.toTatva();
+    res.setHeader('Content-Type', 'application/json');
+    res.send(stack.toString());
+});
+
+apiDefinitions.get("/delete/:id", function (req, res) {
+    fs.unlinkSync(__dirname+"/StackStore/"+req.params.id+'.json');
+    res.send(`Stack with id = ${req.params.id} deleted from StackStore`);
 });
 
 module.exports = apiDefinitions;
