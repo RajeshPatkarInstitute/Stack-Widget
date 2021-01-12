@@ -7,8 +7,8 @@
 | Command | Param1 | Param2  |
 | :---:  |  :-: | :-: |
 | getAll |  _  |  _  |
-| create | id |    |
+| create | id | -  |
 | push | id | value |
-| pop| id |   |
-| serialize| id |   |
-| delete | id |  |
+| pop| id | - |
+| serialize| id | - |
+| delete | id | - |
