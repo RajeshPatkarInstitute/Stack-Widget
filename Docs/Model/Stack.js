@@ -65,9 +65,7 @@ class Stack {
 
     fireEvent(e,v){
         if(!(this._listener === null || this._listener.count === 0)){
-            for(let l of this._listener.getbiterator()){
-                  l(e,v,this);
-            }
+          for(let l of this._listener.iterator)l(e,v,this);
         }
     }
     
@@ -94,7 +92,7 @@ class Stack {
     }
     
     toTatva(){
-          
+          /* Work in Progress */
     }
     
     peek(){
@@ -188,10 +186,20 @@ class Stack {
     }
 }
 
-/* AdHoc Manual Test */
+/* Adhoc Manual Testing */
 
 function main(){
     let s1 = new Stack();
+    s1.addListener((v1,v2,v3)=>{
+        console.log("Listener1 Called");
+        console.log("Event is",v1);
+        console.log("Value is ",v2);
+    })
+    s1.addListener((v1,v2,v3)=>{
+        console.log("Listener2 Called");
+        console.log("Event is",v1);
+        console.log("Value is ",v2);
+    })
     s1.push(10);
     s1.push(20);
     s1.push(30);
