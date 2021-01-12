@@ -18,7 +18,7 @@
 - web-worker-controller.js
 
 #### Model
-- stack.js
+- [stack.js](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/stack-api/stack.js) ✓
 
 #### Persistence
 - stack-store.js
