@@ -1,12 +1,12 @@
-/* Mock Implemenation of UUID*/
+let fs = require('fs');
 
+/* Linked List based Stack */
 var id = 0;
+
 function uuid(){
     id = id + 1;
     return id;
 }
-
-/* Linked List based Stack */
 
 class Node{
     
@@ -36,12 +36,11 @@ class Node{
     set value(v){
         this._v = v;
     }
-    
 }
 
 class Stack {
     
-    constructor(){
+    constructor(id=0){
         let d = new Date();
         this._head = this;
         this._count = 0;
@@ -94,12 +93,8 @@ class Stack {
       return current.value;
     }
     
-    toTatva(){
-          /* Work in Progress */
-    }
-    
     peek(){
-          return this._head;
+          return this._head.value;
     }
     
     flush(){
@@ -187,10 +182,38 @@ class Stack {
         for(let v of this.iterator) s.push(v);
         return s;
     }
-    
+
+    toTatva(){
+        console.log("To Tatva Called");
+        let data = [];
+        for(let v of this.iterator){
+             let obj = {
+                media_type:"",
+                data:Buffer.from(JSON.stringify(v)).toString('base64'),
+                md5:""
+             }
+             data.push(obj);
+        }
+        fs.writeFileSync("./StackStore/"+(this._uuid).toString()+'.json',JSON.stringify(data));
+    }
+
 }
 
-/* Adhoc Manual Testing */
+Stack.fromTatva=function(filename,data)
+{
+    data = JSON.parse(fs.readFileSync("./StackStore/"+filename));
+    console.log(filename.split(".")[0]);
+    let s = new Stack(parseInt(filename.split(".")[0]));
+    length = data.length;
+    for(let i = 0; i < length ; i++){
+        s.push(JSON.parse(Buffer.from(data.pop().data, 'base64').toString()));
+    }
+    return s;
+}
+
+
+
+/* AdHoc Manual Test */
 
 function main(){
     let s1 = new Stack();
@@ -221,9 +244,24 @@ function main(){
     for(let v of s1){
         console.table(v);
     } 
+    let y = s1.pop();
+    let z = JSON.stringify(y);
+    console.log(typeof(z));
+    let m = Buffer.from(z).toString('base64');
+    console.log(`y=${y},z=${z},m=${m}`);
+    
     let x = s1.reduce((e,acc)=>e+acc);
     console.log(x);
     s1.map((e)=>e*3).filter((e)=>e>60).forEach(console.log);
+    //js = JSON.stringify(s1);
+    //console.log(js);
+    s1.toTatva();
+    console.log("Creating Stack s3");
+    s3 = Stack.fromTatva("1.json");
+    for(var v of s3){
+        console.log(v);
+    }
 }
+
 
 main();
