@@ -183,11 +183,13 @@ class Stack {
     }
 
     toString(){
-        let data = [this._uuid];
+        let data = [];
+        let res = {'id' : this._uuid, 'data' : data};
         for(let v of this.iterator){
              data.push(v);
         }
-        return JSON.stringify(data);
+
+        return JSON.stringify(res);
     }
 
     toTatva(){

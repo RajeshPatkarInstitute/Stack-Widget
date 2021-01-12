@@ -1,10 +1,9 @@
 <html>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <style>
-    textarea {
+    ol {
         background-color: black;
         color: white;
-        height: 200px;
-        width: 200px;
     }
 
     .status {
@@ -20,35 +19,81 @@
 <script>
     var ajaxThread = new Worker('ajax.js');
 
+
+    $( document ).ready(function() {
+        var request = { 'command': "getStacks" };
+        ajaxThread.postMessage(request);
+    });
+
+    function createStack() {
+        var stackId = document.getElementById("stack_id").value;
+
+        var request = { 'command': "createStack", 'data': stackId };
+        ajaxThread.postMessage(request);
+
+        popup("creating stack");
+    }
+
     function pop() {
-        ajaxThread.postMessage({ 'command': "pop" });
+        var stackId = getStackId();
+
+        var request = { 'command': "pop", 'data': stackId };
+        ajaxThread.postMessage(request);
+
+
+        popup("popped");
     }
 
     function push() {
-        var pushData = document.getElementById("data").value;
+        var stackId = getStackId();
+        var pushData = document.getElementById("input_box").value;
 
-        var request = { 'command': "push", 'data': pushData };
+        var request = { 'command': "push", 'data': stackId+ "/"+pushData };
         ajaxThread.postMessage(request);
         popup("pushed");
     }
 
     function serialize() {
-        ajaxThread.postMessage({ 'command': "serialize" });
+        var stackId = getStackId();
+        var request = { 'command': "serialize", 'data': stackId };
+        ajaxThread.postMessage(request);
+
         popup("serialized");
     }
 
     function popResultHandler(result) {
-        document.getElementById("result").value = result;
+        $("#input_box").val(result);
     }
 
     function pushResultHandler(result) {
 
     }
 
-    function serializeResultHandler(result) {
+    function serializeResultHandler(stack) {
+        let result = stack.data;
+        $("#allData").empty();
+        for(let data of result){
+            $("#allData").append(`<li>${data}</li>`);
+        }
+    }
 
-        document.getElementById("allData").value = result;
+    function createStackResultHandler(result) {
+            let stack = JSON.parse(result);
+            var radioBtn = $(`<input type="radio" name="stacks" id="${stack.id}" value="${stack.id}" checked="true">${stack.id}</input><br/>`);
+            radioBtn.appendTo('#stack-div');
+    }
 
+    function getStacksResultHandler(result) {
+            let stacks = JSON.parse(result);
+            for(let stack of stacks) {
+                var radioBtn = $(`<input type="radio" name="stacks" id="${stack}" value="${stack}" checked="true">${stack}</input><br/>`);
+                radioBtn.appendTo('#stack-div');
+            }
+            
+    }
+
+    function getStackId(){
+       return  $('input[name="stacks"]:checked').val();
     }
 
 
@@ -74,6 +119,10 @@
         console.log("Response Handler:", data);
 
         switch (command) {
+            case "createStack": createStackResultHandler(data);
+                break;
+            case "getStacks": getStacksResultHandler(data);
+            break;
             case "pop": popResultHandler(data);
                 break;
             case "push": pushResultHandler(data);
@@ -85,27 +134,32 @@
         }
     }
 
+    
 
 </script>
 <h1>Stack</h1>
+
 <label id="status" class="status"></label>
 <br />
 <br />
 <br />
 
-<label>push:</label>
-<textarea id="data"></textarea>
-<button onclick="push()">push</button>
+<div id="stack-div">
+    
+</div>
+<input id="stack_id" name="stack_id"/>
+<button onclick="createStack()">create stack</button>
 
 <br />
+<br />
 
-<label>pop:</label>
-<textarea id="result"></textarea>
+<ol id="allData">
+</ol>
+<input id="input_box" name="input_box"/>
+<button onclick="push()">push</button>
 <button onclick="pop()">pop</button>
 <br />
 
-<label>All Data:</label>
-<textarea id="allData"></textarea>
 <button onclick="serialize()">serialize</button>
 <br />
 
