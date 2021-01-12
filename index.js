@@ -2,11 +2,11 @@ var express = require("express");
 var app = express();
 var bodyParser = require('body-parser');
 
-var apiDefinitions = require("./stack-api/api-definition");
+var apiDefinitions = require("./staas/web-controller");
 
 app.use(bodyParser.urlencoded({extended:false}));
 
-app.use("/stack-api", apiDefinitions);
+app.use("/staas", apiDefinitions);
 
 app.use(express.static("public"));
 
