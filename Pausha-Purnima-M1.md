@@ -12,8 +12,8 @@ User Interface Mock-up
 - [] Create option in UI for viewing stack content 
 
 #### API
-- [Stack Rest API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Controller/Stack-Rest-API.md)
-- [Stack API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/stack-api/stack.js)
+- [Stack Rest API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Controller/Stack-Rest-API.md) ✓
+- [Stack API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/stack-api/stack.js) ✓
  
 #### Model
 Create Stack Model with following features
