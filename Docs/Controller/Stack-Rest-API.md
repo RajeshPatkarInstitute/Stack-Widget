@@ -11,11 +11,10 @@
 
 
 ## Create
-This Restful call will create a Stack with the id provided via dynamic URL. 
-eg. **localhost:8080/stack-api/create/23**
-This URL will create a Stack with id 23
+This Restful call will create a Stack with the id provided via dynamic URL.
+eg. **localhost:8080/stack-api/create/23**. The preceeding URL will create a Stack with id 23
 
 ## Delete
 This Restful call will delete the Stack with a given id provided via dynamic URL. 
-eg. **localhost:8080/stack-api/delete/23**
-This URL will create a Stack with id 23
+eg. **localhost:8080/stack-api/delete/23**. 
+The preceeding URL will create a Stack with id 23
