@@ -3,12 +3,19 @@
 ## Interface
 * push
 * pop
-* flush
 * peek
-* toTatva
+* flush
 * isEmpty
+* iterator
+* reduce
+* map
+* filter
+* forEach
+* addListener
+* fireEvent
+* toTatva
 
 
 ## Basic Reference Implementation Given.
 
-[LStack](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Model/LStack.js)
+[Stack](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/stack-api/stack.js)
