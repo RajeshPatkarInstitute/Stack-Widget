@@ -7,7 +7,6 @@ function uuid(){
     id = id + 1;
     return id;
 }
-
 class Node{
     
     constructor(back=null,v=null){
@@ -46,7 +45,7 @@ class Stack {
         this._count = 0;
         this._creation = d;
         this._updation = d;
-        this._uuid = uuid();
+        this._uuid = id;
         this._listener = null;
         this[Symbol.iterator] = this.SGenerator;
     }
@@ -183,8 +182,15 @@ class Stack {
         return s;
     }
 
+    toString(){
+        let data = [this._uuid];
+        for(let v of this.iterator){
+             data.push(v);
+        }
+        return JSON.stringify(data);
+    }
+
     toTatva(){
-        console.log("To Tatva Called");
         let data = [];
         for(let v of this.iterator){
              let obj = {
@@ -194,16 +200,15 @@ class Stack {
              }
              data.push(obj);
         }
-        fs.writeFileSync("./StackStore/"+(this._uuid).toString()+'.json',JSON.stringify(data));
+        fs.writeFileSync(__dirname+"/StackStore/"+(this._uuid).toString()+'.json',JSON.stringify(data));
     }
 
 }
 
-Stack.fromTatva=function(filename,data)
+Stack.fromTatva=function(id)
 {
-    data = JSON.parse(fs.readFileSync("./StackStore/"+filename));
-    console.log(filename.split(".")[0]);
-    let s = new Stack(parseInt(filename.split(".")[0]));
+    data = JSON.parse(fs.readFileSync(__dirname+"/StackStore/"+id+".json"));
+    let s = new Stack(parseInt(id));
     length = data.length;
     for(let i = 0; i < length ; i++){
         s.push(JSON.parse(Buffer.from(data.pop().data, 'base64').toString()));
@@ -211,57 +216,4 @@ Stack.fromTatva=function(filename,data)
     return s;
 }
 
-
-
-/* AdHoc Manual Test */
-
-function main(){
-    let s1 = new Stack();
-    s1.addListener((v1,v2,v3)=>{
-        console.log("Listener1 Called");
-        console.log("Event is",v1);
-        console.log("Value is ",v2);
-    })
-    s1.addListener((v1,v2,v3)=>{
-        console.log("Listener2 Called");
-        console.log("Event is",v1);
-        console.log("Value is ",v2);
-    })
-    s1.push(10);
-    s1.push(20);
-    s1.push(30);
-    s1.push(40);
-    let s2 = new Stack();
-    s2.push("cat");
-    s2.push("dog");
-    s2.push("donkey");
-    s2.push("grapes");
-    for(let v of s2.iterator){
-        console.table(v);
-    } 
-    s1.push(51);
-    s1.push(99);
-    for(let v of s1){
-        console.table(v);
-    } 
-    let y = s1.pop();
-    let z = JSON.stringify(y);
-    console.log(typeof(z));
-    let m = Buffer.from(z).toString('base64');
-    console.log(`y=${y},z=${z},m=${m}`);
-    
-    let x = s1.reduce((e,acc)=>e+acc);
-    console.log(x);
-    s1.map((e)=>e*3).filter((e)=>e>60).forEach(console.log);
-    //js = JSON.stringify(s1);
-    //console.log(js);
-    s1.toTatva();
-    console.log("Creating Stack s3");
-    s3 = Stack.fromTatva("1.json");
-    for(var v of s3){
-        console.log(v);
-    }
-}
-
-
-main();
+module.exports = Stack;
