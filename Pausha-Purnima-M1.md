@@ -5,11 +5,7 @@
 - stack-widget-component
   - stack-widget.html
   - stack-widget.css
-  - stack-widget.js
-
-User Interface Mock-up
-![Image of Stack Widget](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/StackWidgetUI.png)
-
+  - stack-widget.jj
 
 #### API
 - [Stack Rest API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Controller/Stack-Rest-API.md) ✓
