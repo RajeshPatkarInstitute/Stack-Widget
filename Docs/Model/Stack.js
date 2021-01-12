@@ -216,4 +216,40 @@ Stack.fromTatva=function(id)
     return s;
 }
 
-module.exports = Stack;
+/* Adhoc Manual Testing */
+
+function main(){
+    let s1 = new Stack();
+    s1.addListener((v1,v2,v3)=>{
+        console.log("Listener1 Called");
+        console.log("Event is",v1);
+        console.log("Value is ",v2);
+    })
+    s1.addListener((v1,v2,v3)=>{
+        console.log("Listener2 Called");
+        console.log("Event is",v1);
+        console.log("Value is ",v2);
+    })
+    s1.push(10);
+    s1.push(20);
+    s1.push(30);
+    s1.push(40);
+    let s2 = new Stack();
+    s2.push("cat");
+    s2.push("dog");
+    s2.push("donkey");
+    s2.push("grapes");
+    for(let v of s2.iterator){
+        console.table(v);
+    } 
+    s1.push(51);
+    s1.push(99);
+    for(let v of s1){
+        console.table(v);
+    } 
+    let x = s1.reduce((e,acc)=>e+acc);
+    console.log(x);
+    s1.map((e)=>e*3).filter((e)=>e>60).forEach(console.log);
+}
+
+main();
