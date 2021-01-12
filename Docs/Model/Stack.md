@@ -13,6 +13,8 @@
 * forEach
 * addListener
 * fireEvent
+* reverse
+* toString
 * toTatva
 
 
