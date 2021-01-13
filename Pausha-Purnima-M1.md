@@ -10,8 +10,8 @@
 - ajax-controller.js
 
 #### API
-- [Stack Rest API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Controller/Stack-Rest-API.md) ✓
-- [Stack API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/Docs/Model/Stack-API.md) ✓
+- [Stack Rest API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/docs/Controller/Stack-Rest-API.md) ✓
+- [Stack API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/docs/Model/Stack-API.md) ✓
 
 #### Controller
 - web-controller.js
