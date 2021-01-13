@@ -46,7 +46,7 @@ function getStacks() {
             respond("SUCCESS", stacks, "getStacks");
         }
     }
-    xhttp.open("GET", "/stack-api/getAll", true);
+    xhttp.open("GET", "/staas/getAll", true);
     xhttp.send();
 
 }
@@ -62,7 +62,7 @@ function createStack(stackId) {
             respond("SUCCESS", poppedData, "createStack");
         }
     }
-    xhttp.open("GET", "/stack-api/create/" + stackId, true);
+    xhttp.open("GET", "/staas/create/" + stackId, true);
     xhttp.send();
 
 }
@@ -78,14 +78,14 @@ function pop(data) {
             respond("SUCCESS", poppedData, "pop");
         }
     }
-    xhttp.open("GET", "/stack-api/pop/"+data, true);
+    xhttp.open("GET", "/staas/pop/"+data, true);
     xhttp.send();
 
 }
 
 function push(pushData) {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/stack-api/push/" + pushData, true);
+    xhttp.open("GET", "/staas/push/" + pushData, true);
     xhttp.send();
     respond("SUCCESS", "", "push");
 }
@@ -101,7 +101,7 @@ function serialize(data) {
             respond("SUCCESS", JSON.parse(allData), "serialize");
         }
     }
-    xhttp.open("GET", "/stack-api/serialize/"+data, true);
+    xhttp.open("GET", "/staas/serialize/"+data, true);
     xhttp.send();
 }
 

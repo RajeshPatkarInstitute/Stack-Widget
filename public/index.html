@@ -19,7 +19,6 @@
 <script>
     var ajaxThread = new Worker('ajax.js');
 
-
     $( document ).ready(function() {
         var request = { 'command': "getStacks" };
         ajaxThread.postMessage(request);
