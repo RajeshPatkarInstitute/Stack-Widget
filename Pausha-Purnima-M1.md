@@ -14,7 +14,7 @@
 - [Stack API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/docs/Model/Stack-API.md) ✓
 
 #### Controller
-- web-controller.js
+- [web-controller.js](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/staas/web-controller.js)✓
 - web-worker-controller.js
 
 #### Model
