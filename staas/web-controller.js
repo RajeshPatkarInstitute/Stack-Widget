@@ -1,6 +1,6 @@
 var express = require("express");
 var Stack = require("./stack");
-var store = new require("./persistence");
+var store = require("./persistence");
 
 var webController = express.Router();
 
@@ -23,7 +23,7 @@ webController.get("/pop/:id", function (req, res) {
 });
 
 webController.get("/serialize/:id", function (req, res) {
-    let stack = store.fromTatva(req.params.id);
+    let stack = store.fromTatva(req.params.id.trim());
     res.setHeader('Content-Type', 'application/json');
     res.send(stack.toString());
 });

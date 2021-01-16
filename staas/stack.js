@@ -1,4 +1,4 @@
-let store = new require('persistence')
+let store = require('./persistence')
 
 /* Linked List based Stack */
 var id = 0;
