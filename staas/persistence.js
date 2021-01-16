@@ -1,4 +1,5 @@
 let fs = require('fs');
+let Stack = require("./stack");
 class Persistence {
     constructor(dir=__dirname){
         this.dir = dir;
@@ -22,13 +23,7 @@ class Persistence {
         fs.writeFileSync(this.pathfor((stk._uuid).toString()),JSON.stringify(data));
     }
     fromTatva(id) {
-        console.log(this.pathfor(id));
-        let data1 = fs.readFileSync(this.pathfor(id));
-        console.log(data1);
-        data1 = JSON.stringify(data1);
-        console.log(data1);
-        data = JSON.parse(fs.readFileSync(this.pathfor(id)));
-        console.log("data is ",data);
+        let data = JSON.parse(fs.readFileSync(this.pathfor(id)));
         let s = new Stack(parseInt(id));
         length = data.length;
         for (let i = 0; i < length; i++) {

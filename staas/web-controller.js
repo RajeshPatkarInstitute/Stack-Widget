@@ -7,7 +7,7 @@ var webController = express.Router();
 
 webController.get("/push/:id/:data", function (req, res) {
     var inputData = req.params.data;
-    let stack = Stack.fromTatva(req.params.id);
+    let stack = store.fromTatva(req.params.id);
     stack.push(inputData);
     store.toTatva(stack);
     res.setHeader('Content-Type', 'application/json');
@@ -15,7 +15,7 @@ webController.get("/push/:id/:data", function (req, res) {
 });
 
 webController.get("/pop/:id", function (req, res) {
-    let stack = Stack.fromTatva(req.params.id);
+    let stack = store.fromTatva(req.params.id);
     var elet = stack.pop();
     store.toTatva(stack);
     res.setHeader('Content-Type', 'application/json');
