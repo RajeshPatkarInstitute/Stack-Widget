@@ -23,7 +23,7 @@ webController.get("/pop/:id", function (req, res) {
 });
 
 webController.get("/serialize/:id", function (req, res) {
-    let stack = store.fromTatva(req.params.id.trim());
+    let stack = store.fromTatva(req.params.id);
     res.setHeader('Content-Type', 'application/json');
     res.send(stack.toString());
 });
