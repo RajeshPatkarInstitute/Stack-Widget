@@ -15,7 +15,6 @@
 * fireEvent
 * reverse
 * toString
-* toTatva
 
 
 ## Basic Reference Implementation Given.
