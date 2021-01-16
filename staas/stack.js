@@ -1,4 +1,4 @@
-let fs = require('fs');
+let store = new require('persistence')
 
 /* Linked List based Stack */
 var id = 0;
@@ -188,34 +188,16 @@ class Stack {
         for(let v of this.iterator){
              data.push(v);
         }
-
         return JSON.stringify(res);
     }
-
     toTatva(){
-        let data = [];
-        for(let v of this.iterator){
-             let obj = {
-                media_type:"",
-                data:Buffer.from(JSON.stringify(v)).toString('base64'),
-                md5:""
-             }
-             data.push(obj);
-        }
-        fs.writeFileSync(__dirname+"/StackStore/"+(this._uuid).toString()+'.json',JSON.stringify(data));
+        store.toTatva(this);
     }
-
 }
 
 Stack.fromTatva=function(id)
 {
-    data = JSON.parse(fs.readFileSync(__dirname+"/StackStore/"+id+".json"));
-    let s = new Stack(parseInt(id));
-    length = data.length;
-    for(let i = 0; i < length ; i++){
-        s.push(JSON.parse(Buffer.from(data.pop().data, 'base64').toString()));
-    }
-    return s;
+    return store.fromTatva(id);
 }
 
 module.exports = Stack;
