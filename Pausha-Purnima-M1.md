@@ -21,4 +21,4 @@
 - [stack.js](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/stack-api/stack.js) ✓
 
 #### Persistence
-- stack-store.js
+- persistence.js
