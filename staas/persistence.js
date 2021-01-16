@@ -19,17 +19,16 @@ class Persistence {
             }
             data.push(obj);
         }
-        console.log(this.pathfor(stk._uuid).toString());
         fs.writeFileSync(this.pathfor((stk._uuid).toString()),JSON.stringify(data));
     }
     fromTatva(id) {
         let data = JSON.parse(fs.readFileSync(this.pathfor(id)));
         let s = new Stack(parseInt(id));
-        length = data.length;
+        let length = data.length;
         for (let i = 0; i < length; i++) {
             s.push(JSON.parse(Buffer.from(data.pop().data, 'base64').toString()));
         }
-        return s;
+        return s;   
     }
     getAll(){
         let files = fs.readdirSync(this.dir +"/"+this.store);

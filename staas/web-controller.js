@@ -52,7 +52,7 @@ webController.get("/flush/:id", function (req, res) {
 });
 
 webController.get("/delete/:id", function (req, res) {
-    store.deleteTavta(req.params.id);
+    store.deleteTatva(req.params.id);
     res.send(`Stack with id = ${req.params.id} deleted from StackStore`);
 });
 

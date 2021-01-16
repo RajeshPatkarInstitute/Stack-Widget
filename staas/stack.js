@@ -1,5 +1,3 @@
-let store = require('./persistence')
-
 /* Linked List based Stack */
 var id = 0;
 
@@ -190,14 +188,6 @@ class Stack {
         }
         return JSON.stringify(res);
     }
-    toTatva(){
-        store.toTatva(this);
-    }
-}
-
-Stack.fromTatva=function(id)
-{
-    return store.fromTatva(id);
 }
 
 module.exports = Stack;
