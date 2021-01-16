@@ -4,7 +4,7 @@
   "description": "Creating a General Stack Widget in HTML,CSS, JS.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test --recursive --exit -- -v"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,10 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "eslint": "^7.17.0"
+    "chai": "^4.2.0",
+    "eslint": "^7.17.0",
+    "mocha": "^8.2.1",
+    "mock-fs": "^4.13.0",
+    "sinon": "^9.2.3"
   }
 }
