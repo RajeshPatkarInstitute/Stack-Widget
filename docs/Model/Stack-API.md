@@ -19,4 +19,4 @@
 
 ## Basic Reference Implementation Given.
 
-[Stack](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/stack-api/stack.js)
+[Stack](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/staas/stack.js)
