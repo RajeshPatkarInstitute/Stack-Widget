@@ -1,5 +1,5 @@
 <html>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <style>
     ol {
         background-color: black;
@@ -17,50 +17,81 @@
 </style>
 
 <script>
-    var ajaxThread = new Worker('ajax.js');
+    var uiController = UiControllerFactory("client-side");
 
-    $( document ).ready(function() {
+    function UiControllerFactory(type) {
+        if(type == "client-side") {
+            return new Worker('clientUiController.js');
+        } else {
+            return new Worker('serverUiController.js');
+        }
+    }
+
+    function loadStacks() {
         var request = { 'command': "getStacks" };
-        ajaxThread.postMessage(request);
-    });
+        uiController.postMessage(request);
+    }
+
+    $(document).ready(loadStacks);
 
     function createStack() {
         var stackId = document.getElementById("stack_id").value;
 
         var request = { 'command': "createStack", 'data': stackId };
-        ajaxThread.postMessage(request);
+        uiController.postMessage(request);
 
         popup("creating stack");
+    }
+
+    function deleteStack() {
+        var stackId = document.getElementById("stack_id").value;
+
+        var request = { 'command': "deleteStack", 'data': stackId };
+        uiController.postMessage(request);
+
+        popup("deleting stack");
     }
 
     function pop() {
         var stackId = getStackId();
 
         var request = { 'command': "pop", 'data': stackId };
-        ajaxThread.postMessage(request);
-
+        uiController.postMessage(request);
 
         popup("popped");
+    }
+
+    function peek() {
+        var stackId = getStackId();
+
+        var request = { 'command': "peek", 'data': stackId };
+        uiController.postMessage(request);
+
+        popup("peeked");
     }
 
     function push() {
         var stackId = getStackId();
         var pushData = document.getElementById("input_box").value;
 
-        var request = { 'command': "push", 'data': stackId+ "/"+pushData };
-        ajaxThread.postMessage(request);
+        var request = { 'command': "push", 'data': stackId + "/" + pushData };
+        uiController.postMessage(request);
         popup("pushed");
     }
 
     function serialize() {
         var stackId = getStackId();
         var request = { 'command': "serialize", 'data': stackId };
-        ajaxThread.postMessage(request);
+        uiController.postMessage(request);
 
         popup("serialized");
     }
 
     function popResultHandler(result) {
+        $("#input_box").val(result);
+    }
+
+    function peekResultHandler(result) {
         $("#input_box").val(result);
     }
 
@@ -71,30 +102,43 @@
     function serializeResultHandler(stack) {
         let result = stack.data;
         $("#allData").empty();
-        for(let data of result){
+
+        for (let data of result) {
             $("#allData").append(`<li>${data}</li>`);
         }
     }
 
     function createStackResultHandler(result) {
-            let stack = JSON.parse(result);
-            var radioBtn = $(`<input type="radio" name="stacks" id="${stack.id}" value="${stack.id}" checked="true">${stack.id}</input><br/>`);
-            radioBtn.appendTo('#stack-div');
+        let stack = JSON.parse(result);
+        var mySelect = $('#stacks');
+
+        var dropDown = $(`<option></option>`).val(stack.id).html(stack.id);
+        mySelect.append(dropDown);
     }
+
+    function deleteStackResultHandler(result) {
+        console.log(result);
+        let stack = JSON.parse(result);
+        loadStacks();
+    }
+
 
     function getStacksResultHandler(result) {
-            let stacks = JSON.parse(result);
-            for(let stack of stacks) {
-                var radioBtn = $(`<input type="radio" name="stacks" id="${stack}" value="${stack}" checked="true">${stack}</input><br/>`);
-                radioBtn.appendTo('#stack-div');
-            }
-            
+        let stackIds = JSON.parse(result);
+        var mySelect = $('#stacks');
+        mySelect.empty();
+        for (let stackId of stackIds) {
+            var dropDown = $(`<option></option>`).val(stackId).html(stackId);
+            mySelect.append(dropDown);
+        }
     }
 
-    function getStackId(){
-       return  $('input[name="stacks"]:checked').val();
-    }
+    function getStackId() {
+        let stackId = $('#stacks').val();
 
+        console.log("selected value : " + stackId)
+        return stackId;
+    }
 
     function popup(txt) {
         document.getElementById("status").innerHTML = txt;
@@ -104,7 +148,7 @@
 
     }
 
-    ajaxThread.onmessage = responseHandler;
+    uiController.onmessage = responseHandler;
 
     function responseHandler(e) {
         console.log("Response Handler:", e);
@@ -120,11 +164,15 @@
         switch (command) {
             case "createStack": createStackResultHandler(data);
                 break;
+            case "deleteStack": deleteStackResultHandler(data);
+                break;
             case "getStacks": getStacksResultHandler(data);
-            break;
+                break;
             case "pop": popResultHandler(data);
                 break;
             case "push": pushResultHandler(data);
+                break;
+            case "peek": peekResultHandler(data);
                 break;
             case "serialize": serializeResultHandler(data);
                 break;
@@ -133,7 +181,7 @@
         }
     }
 
-    
+
 
 </script>
 <h1>Stack</h1>
@@ -144,19 +192,23 @@
 <br />
 
 <div id="stack-div">
-    
+    <select id="stacks" onchange="serialize()">
+    </select>
 </div>
-<input id="stack_id" name="stack_id"/>
+
+<input id="stack_id" name="stack_id" />
 <button onclick="createStack()">create stack</button>
+<button onclick="deleteStack()">delete stack</button>
 
 <br />
 <br />
 
 <ol id="allData">
 </ol>
-<input id="input_box" name="input_box"/>
+<input id="input_box" name="input_box" />
 <button onclick="push()">push</button>
 <button onclick="pop()">pop</button>
+<button onclick="peek()">peek</button>
 <br />
 
 <button onclick="serialize()">serialize</button>

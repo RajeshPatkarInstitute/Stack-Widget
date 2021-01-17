@@ -190,4 +190,8 @@ class Stack {
     }
 }
 
+if(typeof exports == 'undefined'){
+    this['module'] = {};
+}
+
 module.exports = Stack;

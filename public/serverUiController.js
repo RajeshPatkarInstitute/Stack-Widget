@@ -1,10 +1,10 @@
-function ajaxController(e) {
+function uiController(e) {
 
     const parameters = e.data;
     const command = parameters.command;
     const data = parameters.data;
-    
-    console.log("Input:",command,data);
+
+    console.log("Input:", command, data);
     switch (command) {
         case "getStacks": getStacks(data);
             break;
@@ -12,10 +12,16 @@ function ajaxController(e) {
         case "createStack": createStack(data);
             break;
 
+        case "deleteStack": deleteStack(data);
+            break;
+
         case "push": push(data);
             break;
 
         case "pop": pop(data);
+            break;
+
+        case "peek": peek(data);
             break;
 
         case "serialize": serialize(data);
@@ -67,6 +73,22 @@ function createStack(stackId) {
 
 }
 
+function deleteStack(stackId) {
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
+            console.log(xhttp.responseText);
+
+            var poppedData = xhttp.responseText;
+            respond("SUCCESS", poppedData, "deleteStack");
+        }
+    }
+    xhttp.open("GET", "/staas/delete/" + stackId, true);
+    xhttp.send();
+
+}
+
 function pop(data) {
 
     var xhttp = new XMLHttpRequest();
@@ -78,7 +100,23 @@ function pop(data) {
             respond("SUCCESS", poppedData, "pop");
         }
     }
-    xhttp.open("GET", "/staas/pop/"+data, true);
+    xhttp.open("GET", "/staas/pop/" + data, true);
+    xhttp.send();
+
+}
+
+function peek(data) {
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = () => {
+        if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
+            console.log(xhttp.responseText);
+
+            var peekedData = xhttp.responseText;
+            respond("SUCCESS", peekedData, "peek");
+        }
+    }
+    xhttp.open("GET", "/staas/peek/" + data, true);
     xhttp.send();
 
 }
@@ -101,11 +139,11 @@ function serialize(data) {
             respond("SUCCESS", JSON.parse(allData), "serialize");
         }
     }
-    xhttp.open("GET", "/staas/serialize/"+data, true);
+    xhttp.open("GET", "/staas/serialize/" + data, true);
     xhttp.send();
 }
 
 
 
 
-onmessage = ajaxController
+onmessage = uiController;
