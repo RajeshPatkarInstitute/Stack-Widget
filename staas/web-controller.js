@@ -22,6 +22,15 @@ webController.get("/pop/:id", function (req, res) {
     res.send(JSON.stringify(elet));
 });
 
+webController.get("/peek/:id", function (req, res) {
+    let stack = store.fromTatva(req.params.id);
+    var elet = stack.peek();
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(elet));
+});
+
+
 webController.get("/serialize/:id", function (req, res) {
     let stack = store.fromTatva(req.params.id);
     res.setHeader('Content-Type', 'application/json');
@@ -53,7 +62,7 @@ webController.get("/flush/:id", function (req, res) {
 
 webController.get("/delete/:id", function (req, res) {
     store.deleteTatva(req.params.id);
-    res.send(`Stack with id = ${req.params.id} deleted from StackStore`);
+    res.send(`{ "id" : ${req.params.id}}`);
 });
 
 module.exports = webController;
