@@ -1,7 +1,7 @@
 importScripts("stack.js");
 
 var StackModule = module.exports; //FIXME: not clean... think of better cleaner ways
-var stacks = [];
+const stacksMap = new Map();
 function uiController(e) {
 
     const parameters = e.data;
@@ -46,83 +46,73 @@ function respond(status, response, command) {
 }
 
 function getStacks() {
-    respond("SUCCESS", JSON.stringify(stacks), "getStacks");
+    var stacksList = [];
+    for (let key of stacksMap.keys()) {
+        stacksList.push(key)
+    }
+    respond("SUCCESS", JSON.stringify(stacksList), "getStacks");  
 }
 
 function createStack(stackId) {
-    const stack = new StackModule(stackId);
-    stacks.push(stack);
-    respond("SUCCESS", stack, "createStack");
+    var stack = new StackModule(parseInt(stackId));
+    stacksMap.set(stackId, stack);
+    respond("SUCCESS", stack.toString(), "createStack");
 }
 
 function deleteStack(stackId) {
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () => {
-        if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
-            console.log(xhttp.responseText);
-
-            var poppedData = xhttp.responseText;
-            respond("SUCCESS", poppedData, "deleteStack");
-        }
+    if(stacksMap.delete(stackId)){
+        respond("SUCCESS", stackId, "deleteStack");
+    } else {
+        console.error('No stack with id #{data} found');
+        respond("FAILURE", JSON.stringify(""), "deleteStack");        
     }
-    xhttp.open("GET", "/staas/delete/" + stackId, true);
-    xhttp.send();
 
 }
 
 function pop(data) {
+    var stack = stacksMap.get(data);
+    if (stack == undefined) {
+        console.error('No stack with id #{data} found');
+        respond("FAILURE", [], "pop");
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () => {
-        if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
-            console.log(xhttp.responseText);
-
-            var poppedData = xhttp.responseText;
-            respond("SUCCESS", poppedData, "pop");
-        }
+    } else {
+        var poppedData = stack.pop();
+        respond("SUCCESS", poppedData, "pop");
     }
-    xhttp.open("GET", "/staas/pop/" + data, true);
-    xhttp.send();
 
 }
 
 function peek(data) {
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () => {
-        if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
-            console.log(xhttp.responseText);
-
-            var peekedData = xhttp.responseText;
-            respond("SUCCESS", peekedData, "peek");
-        }
+    var stack = stacksMap.get(data);
+    if (stack == undefined) {
+        console.error('No stack with id #{data} found');
+        respond("FAILURE", "", "peek");
+    } else {
+        var peekValue = stack.peek();
+        console.log("peek value "+peekValue);
+        respond("SUCCESS", peekValue, "peek");
     }
-    xhttp.open("GET", "/staas/peek/" + data, true);
-    xhttp.send();
-
 }
 
 function push(pushData) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "/staas/push/" + pushData, true);
-    xhttp.send();
-    respond("SUCCESS", "", "push");
+    var dataArray = pushData.split("/");
+    var stackId = dataArray[0];
+    var data = dataArray[1];
+    var stack = stacksMap.get(stackId);
+    if (stack == undefined) {
+        console.error('No stack with id #{data} found');
+        respond("FAILURE", "", "push");
+    } else {
+        stack.push(data);
+        respond("SUCCESS", "", "push");
+    }
 }
 
 
 function serialize(data) {
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () => {
-        if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status == 200) {
-            const allData = xhttp.responseText;
-            console.log("serialize result: ", allData);
-            respond("SUCCESS", JSON.parse(allData), "serialize");
-        }
-    }
-    xhttp.open("GET", "/staas/serialize/" + data, true);
-    xhttp.send();
+    var stack = stacksMap.get(data);
+    console.log("serialize result: ", stack.toString());
+    respond("SUCCESS", JSON.parse(stack.toString()), "serialize");
 }
 
 
