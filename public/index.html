@@ -17,7 +17,10 @@
 </style>
 
 <script>
-    var uiController = UiControllerFactory("server-side");
+
+    var serverSideUIController = UiControllerFactory();
+    var clientSideUIController = UiControllerFactory("client-side");
+    var uiController = serverSideUIController; // default
 
     function UiControllerFactory(type) {
         if(type == "client-side") {
@@ -25,6 +28,23 @@
         } else {
             return new Worker('serverUiController.js');
         }
+    }
+
+    function handleChangeMode(stackModeInput) {
+
+        currentStackMode = stackModeInput.value;
+        switch(currentStackMode) {
+            case "serverSide" : uiController = serverSideUIController; break;
+            case "clientSide" : uiController = clientSideUIController; break;
+            default : uiController = serverSideUIController; break;
+        }
+        $('#stacks').empty();            
+        $('#allData').empty();            
+
+        var request = { 'command': "getStacks" };
+        uiController.postMessage(request);
+        uiController.onmessage = responseHandler;
+
     }
 
     function loadStacks() {
@@ -77,6 +97,8 @@
         var request = { 'command': "push", 'data': stackId + "/" + pushData };
         uiController.postMessage(request);
         popup("pushed");
+        $("#input_box").val('');
+
     }
 
     function serialize() {
@@ -89,6 +111,7 @@
 
     function popResultHandler(result) {
         $("#input_box").val(result);
+        serialize();
     }
 
     function peekResultHandler(result) {
@@ -96,7 +119,7 @@
     }
 
     function pushResultHandler(result) {
-
+        serialize();
     }
 
     function serializeResultHandler(stack) {
@@ -114,10 +137,10 @@
 
         var dropDown = $(`<option></option>`).val(stack.id).html(stack.id);
         mySelect.append(dropDown);
+        $('#stack_id').val('');            
     }
 
     function deleteStackResultHandler(result) {
-        console.log(result);
         let stack = JSON.parse(result);
         loadStacks();
     }
@@ -185,6 +208,15 @@
 
 </script>
 <h1>Stack</h1>
+<label> Select a stack mode </label>
+<p>This stack functionality can be used in 2 modes</p>
+    <div><input type="radio" id="serverSide" name="stackMode" value="serverSide" checked onclick="handleChangeMode(this)">
+        <label for="serverSide">Server-side (default)</label>
+    </div>
+    <div>
+        <input type="radio" id="clientSide" name="stackMode" value="clientSide" onclick="handleChangeMode(this)">
+        <label for="clientSide">Client-side</label>
+    </div>
 
 <label id="status" class="status"></label>
 <br />
