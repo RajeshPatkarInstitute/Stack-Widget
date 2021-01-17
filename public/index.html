@@ -17,11 +17,19 @@
 </style>
 
 <script>
-    var ajaxThread = new Worker('ajax.js');
+    var uiController = UiControllerFactory("client-side");
+
+    function UiControllerFactory(type) {
+        if(type == "client-side") {
+            return new Worker('clientUiController.js');
+        } else {
+            return new Worker('serverUiController.js');
+        }
+    }
 
     function loadStacks() {
         var request = { 'command': "getStacks" };
-        ajaxThread.postMessage(request);
+        uiController.postMessage(request);
     }
 
     $(document).ready(loadStacks);
@@ -30,7 +38,7 @@
         var stackId = document.getElementById("stack_id").value;
 
         var request = { 'command': "createStack", 'data': stackId };
-        ajaxThread.postMessage(request);
+        uiController.postMessage(request);
 
         popup("creating stack");
     }
@@ -39,7 +47,7 @@
         var stackId = document.getElementById("stack_id").value;
 
         var request = { 'command': "deleteStack", 'data': stackId };
-        ajaxThread.postMessage(request);
+        uiController.postMessage(request);
 
         popup("deleting stack");
     }
@@ -48,7 +56,7 @@
         var stackId = getStackId();
 
         var request = { 'command': "pop", 'data': stackId };
-        ajaxThread.postMessage(request);
+        uiController.postMessage(request);
 
         popup("popped");
     }
@@ -57,7 +65,7 @@
         var stackId = getStackId();
 
         var request = { 'command': "peek", 'data': stackId };
-        ajaxThread.postMessage(request);
+        uiController.postMessage(request);
 
         popup("peeked");
     }
@@ -67,14 +75,14 @@
         var pushData = document.getElementById("input_box").value;
 
         var request = { 'command': "push", 'data': stackId + "/" + pushData };
-        ajaxThread.postMessage(request);
+        uiController.postMessage(request);
         popup("pushed");
     }
 
     function serialize() {
         var stackId = getStackId();
         var request = { 'command': "serialize", 'data': stackId };
-        ajaxThread.postMessage(request);
+        uiController.postMessage(request);
 
         popup("serialized");
     }
@@ -140,7 +148,7 @@
 
     }
 
-    ajaxThread.onmessage = responseHandler;
+    uiController.onmessage = responseHandler;
 
     function responseHandler(e) {
         console.log("Response Handler:", e);

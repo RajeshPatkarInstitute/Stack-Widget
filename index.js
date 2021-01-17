@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use("/staas", apiDefinitions);
 
 app.use(express.static("public"));
+app.use(express.static("staas"));
 
 app.listen(8080, function () {
     console.log("started express on 8080");

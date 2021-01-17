@@ -1,5 +1,4 @@
 var express = require("express");
-var Stack = require("./stack");
 var store = require("./persistence");
 
 var webController = express.Router();
