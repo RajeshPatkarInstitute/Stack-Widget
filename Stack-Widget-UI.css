@@ -1,0 +1,29 @@
+* {
+	margin: auto;
+	padding: 0px;
+}
+body {
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.container {
+	height: 100%;
+}
+.displayArea {
+	width: 300px;
+	border: 5px solid;
+	padding: 50px;
+	margin: 2px;
+	height: 40px;
+	overflow-y: scroll;
+}
+.main {
+	width: 450px;
+	border: 5px solid;
+	padding: 5px;
+	margin: 2px;
+	text-align: center;
+}
+.userAction {
+	margin: 0px;
+}
