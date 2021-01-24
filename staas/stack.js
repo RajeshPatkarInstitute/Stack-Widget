@@ -62,6 +62,10 @@ class Stack {
         return this;
     }
 
+    removeListener(){
+        return this._listener.pop();
+    }
+
     fireEvent(e,v){
         if(!(this._listener === null || this._listener.count === 0)){
           for(let l of this._listener.iterator)l(e,v,this);
