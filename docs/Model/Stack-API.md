@@ -12,9 +12,14 @@
 * filter
 * forEach
 * addListener
+* removeListener
 * fireEvent
 * reverse
 * toString
+
+## Event Notification Interface
+* addListener
+* removeListener
 
 
 ## Basic Reference Implementation Given.
