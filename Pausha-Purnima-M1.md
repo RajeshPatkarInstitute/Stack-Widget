@@ -15,7 +15,7 @@
 
 #### Controller
 - [web-controller.js](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/staas/web-controller.js)✓
-- web-worker-controller.js
+- [web-worker-controller.js](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/public/clientUiController.js) ✓
 
 #### Model
 - [stack.js](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/staas/stack.js) ✓
