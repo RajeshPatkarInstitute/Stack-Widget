@@ -7,7 +7,7 @@
   - stack-widget.css
   - stack-widget.js
 - vertical-menu.js
-- ajax-controller.js
+- [ajax-controller.js](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/public/serverUiController.js) ✓
 
 #### API
 - [Stack Rest API v0.1](https://github.com/RajeshPatkarInstitute/Stack-Widget/blob/main/docs/Controller/Stack-Rest-API.md) ✓
