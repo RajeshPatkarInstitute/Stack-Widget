@@ -20,7 +20,7 @@ td {
 table{
     border:solid;
     align-content:center;
-    border-radius: 0.2em;
+    border-radius: 1em;
     border-width: 0.2em;
     background-color: gold;
 
@@ -28,6 +28,13 @@ table{
 
 .footnote{
     color: darkgray;
+    font-style:normal;
+    font-size: small;
+    padding:0.5em;
+}
+
+.note1{
+    color:chocolate;
     font-style:normal;
     font-size: small;
 }
