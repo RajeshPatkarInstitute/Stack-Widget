@@ -1,249 +1,90 @@
 <html>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<style>
-    ol {
-        background-color: black;
-        color: white;
-    }
 
-    .status {
-        background-color: blue;
-        color: red;
-        height: 20px;
-        width: 20px;
-        font-size: large;
-        font-weight: 700;
-    }
-</style>
+<head>
+    <title> Stack Widget </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="stackwidget.css" rel="stylesheet" />
+    <script src="stackwidget.js"></script>
+</head>
 
-<script>
+<body>
+    <table>
+        <tr>
+            <td>
+                <div id="stack-div">
+                    <label><small>ID</small></label>
+                    <select id="stacks" onchange="serialize()">
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
 
-    var serverSideUIController = UiControllerFactory();
-    var clientSideUIController = UiControllerFactory("client-side");
-    var uiController = serverSideUIController; // default
+            <td>
+                <h1> Stack Widget </h1>
+            </td>
+            <td>
+                <div>
+                    <input type="radio" id="serverSide" name="stackMode" value="serverSide" checked
+                        onclick="handleChangeMode(this)">
+                    <label for="serverSide">Server-side (default)</label>
+                </div>
 
-    function UiControllerFactory(type) {
-        if(type == "client-side") {
-            return new Worker('clientUiController.js');
-        } else {
-            return new Worker('serverUiController.js');
-        }
-    }
+                <div>
+                    <input type="radio" id="clientSide" name="stackMode" value="clientSide"
+                        onclick="handleChangeMode(this)">
+                    <label for="clientSide">Client-side</label>
+                </div>
 
-    function handleChangeMode(stackModeInput) {
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button onclick="createStack()">create stack</button>
+                <input id="stack_id" name="stack_id" />
 
-        currentStackMode = stackModeInput.value;
-        switch(currentStackMode) {
-            case "serverSide" : uiController = serverSideUIController; break;
-            case "clientSide" : uiController = clientSideUIController; break;
-            default : uiController = serverSideUIController; break;
-        }
-        $('#stacks').empty();            
-        $('#allData').empty();            
-
-        var request = { 'command': "getStacks" };
-        uiController.postMessage(request);
-        uiController.onmessage = responseHandler;
-
-    }
-
-    function loadStacks() {
-        var request = { 'command': "getStacks" };
-        uiController.postMessage(request);
-    }
-
-    $(document).ready(loadStacks);
-
-    function createStack() {
-        var stackId = document.getElementById("stack_id").value;
-
-        var request = { 'command': "createStack", 'data': stackId };
-        uiController.postMessage(request);
-
-        popup("creating stack");
-    }
-
-    function deleteStack() {
-        var stackId = document.getElementById("stack_id").value;
-
-        var request = { 'command': "deleteStack", 'data': stackId };
-        uiController.postMessage(request);
-
-        popup("deleting stack");
-    }
-
-    function pop() {
-        var stackId = getStackId();
-
-        var request = { 'command': "pop", 'data': stackId };
-        uiController.postMessage(request);
-
-        popup("popped");
-    }
-
-    function peek() {
-        var stackId = getStackId();
-
-        var request = { 'command': "peek", 'data': stackId };
-        uiController.postMessage(request);
-
-        popup("peeked");
-    }
-
-    function push() {
-        var stackId = getStackId();
-        var pushData = document.getElementById("input_box").value;
-
-        var request = { 'command': "push", 'data': stackId + "/" + pushData };
-        uiController.postMessage(request);
-        popup("pushed");
-        $("#input_box").val('');
-
-    }
-
-    function serialize() {
-        var stackId = getStackId();
-        var request = { 'command': "serialize", 'data': stackId };
-        uiController.postMessage(request);
-
-        popup("serialized");
-    }
-
-    function popResultHandler(result) {
-        $("#input_box").val(result);
-        serialize();
-    }
-
-    function peekResultHandler(result) {
-        $("#input_box").val(result);
-    }
-
-    function pushResultHandler(result) {
-        serialize();
-    }
-
-    function serializeResultHandler(stack) {
-        let result = stack.data;
-        $("#allData").empty();
-
-        for (let data of result) {
-            $("#allData").append(`<li>${data}</li>`);
-        }
-    }
-
-    function createStackResultHandler(result) {
-        let stack = JSON.parse(result);
-        var mySelect = $('#stacks');
-
-        var dropDown = $(`<option></option>`).val(stack.id).html(stack.id);
-        mySelect.append(dropDown);
-        $('#stack_id').val('');            
-    }
-
-    function deleteStackResultHandler(result) {
-        let stack = JSON.parse(result);
-        loadStacks();
-    }
+                <button onclick="deleteStack()">delete stack</button>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <ol id="allData">
+                </ol>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button onclick="serialize()">serialize</button>
+                <button onclick="push()">push</button>
 
 
-    function getStacksResultHandler(result) {
-        let stackIds = JSON.parse(result);
-        var mySelect = $('#stacks');
-        mySelect.empty();
-        for (let stackId of stackIds) {
-            var dropDown = $(`<option></option>`).val(stackId).html(stackId);
-            mySelect.append(dropDown);
-        }
-    }
-
-    function getStackId() {
-        let stackId = $('#stacks').val();
-
-        console.log("selected value : " + stackId)
-        return stackId;
-    }
-
-    function popup(txt) {
-        document.getElementById("status").innerHTML = txt;
-        setTimeout(function () {
-            document.getElementById("status").innerHTML = "";
-        }, 3000);
-
-    }
-
-    uiController.onmessage = responseHandler;
-
-    function responseHandler(e) {
-        console.log("Response Handler:", e);
-
-        var result = e.data;
-
-        const command = result.command;
-        const data = result.data;
-        const status = result.status;
-
-        console.log("Response Handler:", data);
-
-        switch (command) {
-            case "createStack": createStackResultHandler(data);
-                break;
-            case "deleteStack": deleteStackResultHandler(data);
-                break;
-            case "getStacks": getStacksResultHandler(data);
-                break;
-            case "pop": popResultHandler(data);
-                break;
-            case "push": pushResultHandler(data);
-                break;
-            case "peek": peekResultHandler(data);
-                break;
-            case "serialize": serializeResultHandler(data);
-                break;
-
-            default: console.log("Un handled response");
-        }
-    }
+                <input id="input_box" name="input_box" />
 
 
-
-</script>
-<h1>Stack</h1>
-<label> Select a stack mode </label>
-<p>This stack functionality can be used in 2 modes</p>
-    <div><input type="radio" id="serverSide" name="stackMode" value="serverSide" checked onclick="handleChangeMode(this)">
-        <label for="serverSide">Server-side (default)</label>
-    </div>
-    <div>
-        <input type="radio" id="clientSide" name="stackMode" value="clientSide" onclick="handleChangeMode(this)">
-        <label for="clientSide">Client-side</label>
-    </div>
-
-<label id="status" class="status"></label>
-<br />
-<br />
-<br />
-
-<div id="stack-div">
-    <select id="stacks" onchange="serialize()">
-    </select>
-</div>
-
-<input id="stack_id" name="stack_id" />
-<button onclick="createStack()">create stack</button>
-<button onclick="deleteStack()">delete stack</button>
-
-<br />
-<br />
-
-<ol id="allData">
-</ol>
-<input id="input_box" name="input_box" />
-<button onclick="push()">push</button>
-<button onclick="pop()">pop</button>
-<button onclick="peek()">peek</button>
-<br />
-
-<button onclick="serialize()">serialize</button>
-<br />
+                <button onclick="pop()">pop</button>
+                <button onclick="peek()">peek</button>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <label id="status" class="status"></label>
+                <br />
+                <br />
+                <br />
+            </td>
+            <td>
+            </td>
+        </tr>    
+    </table>
+    <label class="footnote">Desgined and Developed by Rajesh Patkar Institute's Alumni Network <em> RPIANS </em></label>
+    
+</body>
 
 </html>

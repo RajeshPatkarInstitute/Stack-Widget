@@ -11,18 +11,39 @@
     <div class="container">
 
         <div class="main" id="main">
-
-            <h1> Stack Widget </h1>
-
+            <table class="widget-head">
+                <tr>
+                    <td>
+                        <select style="display: inline;padding:1px;margin-right:1em" id=" stacks"
+                            onchange="serialize()">
+                        </select>
+                    </td>
+                    <td>
+                        <h1 style="display: inline;"> Stack Widget </h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button onclick="createStack()">create stack</button>
+                    </td>
+                    <td>
+                        <input id="stack_id" name="stack_id" />
+                    </td>    
+                     <td> 
+                        <button onclick="deleteStack()">delete stack</button>
+                    </td>
+                </tr>
+            </table>
             <div class="displayArea" id="stackArea">
-                <ul class="stackResult" id="stackResult"></ul>
-
-
+                <ol id="allData">
+                </ol>
             </div>
             <div class="userAction">
+                <button id="serializeButton" onclick="serialize()">Serialize</button>
                 <button id="pushButton" onclick="push()">Push</button>
-                <input type="text" name="Data" placeholder="Data" id="inputData"></input>
+                <input id="input_box" name="input_box" />
                 <button id="popButton" onclick="pop()">Pop</button>
+                <button id="peekButton" onclick="peek()">Peek</button>
             </div>
 
         </div>

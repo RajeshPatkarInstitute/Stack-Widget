@@ -1,0 +1,33 @@
+ol {
+    background-color: black;
+    color: white;
+}
+
+.status {
+    background-color: blue;
+    color: red;
+    height: 20px;
+    width: 20px;
+    font-size: large;
+    font-weight: 700;
+}
+
+td {
+    align-content: center;
+    padding: 1em;
+}
+
+table{
+    border:solid;
+    align-content:center;
+    border-radius: 0.2em;
+    border-width: 0.2em;
+    background-color: gold;
+
+}
+
+.footnote{
+    color: darkgray;
+    font-style:normal;
+    font-size: small;
+}
